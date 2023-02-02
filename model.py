@@ -125,11 +125,24 @@ def t_ID(t):
 
 lexer = lex.lex()
 
-lexer.input("GOTO : 21")
+def CARGAR_ARCHIVO(nombre : str)->str:
 
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+    archivo = open(nombre)
+    linea = archivo.readline()
+    texto = ""
+    while linea != "":
+        texto += linea.replace("\n"," ")
+        linea = archivo.readline()
 
+    return texto
+
+def EVALUAR_CODIGO(texto : str)->bool:
+    lexer.input(texto)
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        print(tok)
+
+    return True
+    
