@@ -109,7 +109,7 @@ t_LINEA = r"\|"
 ''''
 
 def t_VAR(t):
-    r"[a-zA-Z_][a-zA-Z_0-9]*"
+    r"[a-zA-Z_][a-zA-Z_0-9]*" #PENDIENTE REVISIÓN
     t.type = "VAR"
     return t
 '''''
