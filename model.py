@@ -24,11 +24,7 @@ reserved = {"ROBOT_R" : "ROBOT_R",
 
     "VARS" : "VARS",
 
-    "GOTO" : "GOTO",
-  
-    "ROBOT_R" : "ROBOT_R",
-
-    "VARS" : "VARS",
+    "goto" : "GOTO",
 
     "VAR" : "VAR",
 
@@ -38,47 +34,49 @@ reserved = {"ROBOT_R" : "ROBOT_R",
 
     "else" : "ELSE",
 
-    "ASSINGTO" : "ASSINGTO",
+    "then" : "THEN",
 
-    "MOVE" : "MOVE",
+    "assingTo" : "ASSINGTO",
 
-    "TURN" : "TURN",
+    "move" : "MOVE",
 
-    "FACE" : "FACE",
+    "turn" : "TURN",
 
-    "PUT" : "PUT",
+    "face" : "FACE",
 
-    "PICK" : "PICK",
+    "put" : "PUT",
 
-    "MOVETOTHE" : "MOVETOTHE",
+    "pick" : "PICK",
 
-    "MOVEINDIR" : "MOVEINDIR",
+    "moveToThe" : "MOVETOTHE",
 
-    "JUMPTOTHE" : "JUMPTOTHE",
+    "moveInDir" : "MOVEINDIR",
 
-    "JUMPINDIR" : "JUMPINDIR", 
+    "jumToThe" : "JUMPTOTHE",
 
-    "NOP" : "NOP",
+    "jumpInDir" : "JUMPINDIR", 
+
+    "nop" : "NOP",
 
 #CONDICIONALES (RETURN A BOOL)
 
     "bool" : "BOOL",
 
-    "FACING" : "FACING",
+    "facing" : "FACING",
 
-    "CANPUT" : "CANPUT",
+    "canPut" : "CANPUT",
 
-    "CANPICK" : "CANPICK",
+    "canPick" : "CANPICK",
 
-    "CANMOVEINDIR" : "CANMOVEINDIR",
+    "canMoveInDir" : "CANMOVEINDIR",
 
-    "CANJUMPINDIR" : "CANJUMPINDIR",
+    "canJumpInDir" : "CANJUMPINDIR",
 
-    "CANMOVETOTHE" : "CANMOVETOTHE",
+    "canMoveToThe" : "CANMOVETOTHE",
 
-    "CANJUMPTOTHE" : "CAMJUMPTOTHE",
+    "CanJumpToThe" : "CAMJUMPTOTHE",
 
-    "NOT" : "NOT"}
+    "not" : "NOT"}
 
 tokens = tokens + list(reserved.values())
 
@@ -92,7 +90,7 @@ def t_INT(t):
     return t
 
 def t_ID(t):
-    r"[a-zA-Z_][a-zA-Z_0-9]*"
+    r"(?i)[a-zA-Z_][a-zA-Z_0-9]*"
     t.type = reserved.get(t.value,"ID") #Checar las palabras reservadas
     return t
 
@@ -146,3 +144,67 @@ def EVALUAR_CODIGO(texto : str)->bool:
 
     return True
     
+
+'''
+
+=====================================================
+
+--------------------Parsing--------------------------
+
+=====================================================
+
+'''
+
+def p_robot(p):
+    '''
+
+    robot : program 
+            | empty
+
+    '''
+    print(p[1])
+
+def p_program(p):
+    '''
+
+    program : ROBOT_R VARS varsset
+ 
+
+    '''
+    p[0] = p[1]             #pendiente de revisión
+
+def p_varsset(p):
+
+    '''
+    varsset : ID COMA ID
+            
+    '''
+    p[0] = (p[2], p[1], p[3])
+
+def p_varsset_end(p):
+
+    '''
+    varsset : ID PCOMA PROCS procedure
+            
+    '''
+    p[0] = p[1]             #Pendiente de revisión
+
+def p_procedure_definition(p):
+    '''
+    procedure : ID CORCHI procdec CORCHD
+            
+    '''
+def p_procedure_recursive(p):
+    '''
+    procedure : procedure procedure 
+    '''
+
+    
+
+def p_empty(p):
+    '''
+
+    empty : 
+
+    '''
+    p[0] = None
