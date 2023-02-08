@@ -20,15 +20,15 @@ tokens = [
     "LINEA"
 ]
 
-reserved = {"ROBOT_R" : "ROBOT_R",
+reserved = {"robot_r" : "ROBOT_R",
 
-    "VARS" : "VARS",
+    "vars" : "VARS",
 
     "goto" : "GOTO",
 
-    "VAR" : "VAR",
+    "var" : "VAR",
 
-    "If" : "IF",
+    "if" : "IF",
 
     "while" : "WHILE",
 
@@ -36,7 +36,7 @@ reserved = {"ROBOT_R" : "ROBOT_R",
 
     "then" : "THEN",
 
-    "assingTo" : "ASSINGTO",
+    "assingto" : "ASSINGTO",
 
     "move" : "MOVE",
 
@@ -48,13 +48,13 @@ reserved = {"ROBOT_R" : "ROBOT_R",
 
     "pick" : "PICK",
 
-    "moveToThe" : "MOVETOTHE",
+    "movetothe" : "MOVETOTHE",
 
-    "moveInDir" : "MOVEINDIR",
+    "moveindir" : "MOVEINDIR",
 
-    "jumToThe" : "JUMPTOTHE",
+    "jumtothe" : "JUMPTOTHE",
 
-    "jumpInDir" : "JUMPINDIR", 
+    "jumpindir" : "JUMPINDIR", 
 
     "nop" : "NOP",
 
@@ -64,17 +64,17 @@ reserved = {"ROBOT_R" : "ROBOT_R",
 
     "facing" : "FACING",
 
-    "canPut" : "CANPUT",
+    "canput" : "CANPUT",
 
-    "canPick" : "CANPICK",
+    "canpick" : "CANPICK",
 
-    "canMoveInDir" : "CANMOVEINDIR",
+    "canmoveindir" : "CANMOVEINDIR",
 
-    "canJumpInDir" : "CANJUMPINDIR",
+    "canjumpindir" : "CANJUMPINDIR",
 
-    "canMoveToThe" : "CANMOVETOTHE",
+    "canmovetothe" : "CANMOVETOTHE",
 
-    "CanJumpToThe" : "CAMJUMPTOTHE",
+    "canjumptothe" : "CAMJUMPTOTHE",
 
     "not" : "NOT"}
 
@@ -132,19 +132,20 @@ def CARGAR_ARCHIVO(nombre : str)->str:
         texto += linea.replace("\n"," ")
         linea = archivo.readline()
 
-    return texto
+    return texto.lower()
 
 def EVALUAR_CODIGO(texto : str)->bool:
     lexer.input(texto)
+    tokenized = []
     while True:
         tok = lexer.token()
+        tokenized.append(tok)
         if not tok:
             break
-        print(tok)
+        
 
-    return True
+    return tokenized
     
-
 '''
 
 =====================================================
@@ -181,6 +182,22 @@ def p_varsset(p):
     '''
     p[0] = (p[2], p[1], p[3])
 
+def p_varsset_two(p):
+
+    '''
+    varsset: ID varsset
+    '''
+    p[0] = p[1]
+
+def p_varsset_three(p):
+
+    '''
+    varsset: COMA ID varsset
+    '''
+
+    p[0] = (p[2], p[1], p[3])
+
+
 def p_varsset_end(p):
 
     '''
@@ -208,3 +225,6 @@ def p_empty(p):
 
     '''
     p[0] = None
+
+parser = yacc.yacc
+

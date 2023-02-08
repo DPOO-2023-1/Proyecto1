@@ -5,4 +5,6 @@ def CARGAR_ARCHIVO(nombre : str)->str:
     return texto
 
 def EVALUARCODIGO(codigo: str)->bool:
-    return model.EVALUAR_CODIGO(codigo)
+    tokens = model.EVALUAR_CODIGO(codigo)
+    print(tokens)
+    return tokens
