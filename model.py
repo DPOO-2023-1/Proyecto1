@@ -168,19 +168,45 @@ def p_robot(p):
 def p_program(p):
     '''
 
-    program : ROBOT_R VARS varsset
+    program : ROBOT_R VARS
  
 
     '''
     p[0] = p[1]             #pendiente de revisión
 
-def p_varsset(p):
+def p_vars(p): #Modificacion sebas
 
     '''
-    varsset : ID COMA ID
+    VARS : ID PCOMA PROCS
+            | vars_list PCOMA PROCS
             
     '''
-    p[0] = (p[2], p[1], p[3])
+    p[0] = (p[1], p[2], p[3])
+
+def p_id_pcoma(p):
+
+    '''
+    
+    var_list : ID COMA vars_list
+
+
+    '''
+
+    p[0] = (p[1], p[2], p[3])
+
+def p_final_vars_list(p):
+    '''
+    
+    var_list : ID
+
+    '''
+    p[0] = p[1]
+
+def p_procs(p):
+    '''
+    
+    
+    '''
 
 def p_varsset_two(p):
 
