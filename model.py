@@ -202,45 +202,100 @@ def p_final_vars_list(p):
     '''
     p[0] = p[1]
 
-def p_procs(p):
+def p_procs(p): #Declaracion de funciones
     '''
     
+    procs : PROCS procedure_def procs
+             | PROCS procedure_def
+             
+    '''
+    if len(p) == 4:
+        p[0] = [p[2]] + p[3]
+    else:
+        p[0] = [p[2]]
+
+def p_procedure_def(p):
+    '''
+
+    procedure_def : ID "(" parameters ")" block
     
     '''
+    p[0] = ('procedure_def', p[1], p[3], p[5])
 
-def p_varsset_two(p):
+def p_parameters(p):
+    '''
+    
+    parameters : ID "," parameters
+                 | ID
+                 
+    '''
+    if len(p) == 4:
+        p[0] = [p[1]] + p[3]
+    else:
+        p[0] = [p[1]]
 
+def p_conditional(p): #Declaracion condicionales
     '''
-    varsset: ID varsset
+
+    conditional : IF condition THEN instructions ELSE instructions
+                   | IF condition THEN instructions
+                   
     '''
+    if len(p) == 6:
+        p[0] = ('if', p[2], p[4], p[6])
+    else:
+        p[0] = ('if', p[2], p[4])
+
+def p_loop(p):
+    'loop : WHILE condition DO instructions'
+    p[0] = ('while', p[2], p[4])
+
+def p_repeat(p):
+    'repeat : REPEAT number TIMES instructions'
+    p[0] = ('repeat', p[2], p[4])
+
+def p_condition(p):
+    '''condition : FACING direction
+                 | CANPUT number X
+                 | CANPICK number X
+                 | CANMOVEINDIR number direction
+                 | CANJUMPINDIR number direction
+                 | CANMOVETOTHE number direction
+                 | CANJUMPTOTHE number direction
+                 | NOT condition'''
+    if p[1] == 'not':
+        p[0] = ('not', p[2])
+    else:
+        p[0] = (p[1], p[2], p[3])
+
+def p_block_instructions(p):
+    'block_instructions : LBRACKET instruction_list RBRACKET'
+    p[0] = p[2]
+
+def p_instruction_list(p):
+    '''instruction_list : instruction_list SEMICOLON instruction
+                        | instruction'''
+    if len(p) == 4:
+        p[0] = p[1] + [p[3]]
+    else:
+        p[0] = [p[1]]
+
+def p_instruction(p):
+    '''instruction : assignTo
+                  | goto
+                  | move
+                  | turn
+                  | face
+                  | put
+                  | pick
+                  | moveToThe
+                  | moveInDir
+                  | jumpToThe
+                  | jumpInDir
+                  | nop
+                  | procedure_call
+                  | control_structure'''
     p[0] = p[1]
-
-def p_varsset_three(p):
-
-    '''
-    varsset: COMA ID varsset
-    '''
-
-    p[0] = (p[2], p[1], p[3])
-
-
-def p_varsset_end(p):
-
-    '''
-    varsset : ID PCOMA PROCS procedure
-            
-    '''
-    p[0] = p[1]             #Pendiente de revisión
-
-def p_procedure_definition(p):
-    '''
-    procedure : ID CORCHI procdec CORCHD
-            
-    '''
-def p_procedure_recursive(p):
-    '''
-    procedure : procedure procedure 
-    '''
 
     
 
