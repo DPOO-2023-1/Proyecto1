@@ -8,3 +8,6 @@ def EVALUARCODIGO(codigo: str)->bool:
     tokens = model.EVALUAR_CODIGO(codigo)
     print(tokens)
     return tokens
+
+def parse_code(codigo: str):
+    return model.parse_code(codigo)

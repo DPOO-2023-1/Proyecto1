@@ -29,9 +29,10 @@ def EVALUARCODIGO ():
     texto = controller.CARGAR_ARCHIVO(nombre)
     controller.EVALUARCODIGO(texto)
 
-    rta = "Aqui va la funcion que evalua el archivo"
+    rta = controller.parse_code
 
     print(texto)
+    print(rta)
     return texto
 
 CARGARMENU()

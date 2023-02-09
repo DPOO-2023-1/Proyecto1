@@ -5,7 +5,7 @@ tokens = [
 #SIGNOS
     "INT",
 
-    "ID",
+    "NAME",
     
     "CORCHI",
 
@@ -89,9 +89,9 @@ def t_INT(t):
     t.value =  int(t.value)
     return t
 
-def t_ID(t):
+def t_NAME(t):
     r"(?i)[a-zA-Z_][a-zA-Z_0-9]*"
-    t.type = reserved.get(t.value,"ID") #Checar las palabras reservadas
+    t.type = reserved.get(t.value,"NAME") #Checar las palabras reservadas
     return t
 
 t_CORCHI = r"\["
@@ -156,129 +156,73 @@ def EVALUAR_CODIGO(texto : str)->bool:
 
 '''
 
-def p_robot(p):
-    '''
-
-    robot : program 
-            | empty
-
-    '''
-    print(p[1])
-
 def p_program(p):
-    '''
-
-    program : ROBOT_R VARS
- 
-
-    '''
-    p[0] = p[1]             #pendiente de revisión
-
-def p_vars(p): #Modificacion sebas
-
-    '''
-    VARS : ID PCOMA PROCS
-            | vars_list PCOMA PROCS
-            
-    '''
-    p[0] = (p[1], p[2], p[3])
-
-def p_id_pcoma(p):
-
-    '''
-    
-    var_list : ID COMA vars_list
-
-
-    '''
-
-    p[0] = (p[1], p[2], p[3])
-
-def p_final_vars_list(p):
-    '''
-    
-    var_list : ID
-
-    '''
-    p[0] = p[1]
-
-def p_procs(p): #Declaracion de funciones
-    '''
-    
-    procs : PROCS procedure_def procs
-             | PROCS procedure_def
-             
-    '''
-    if len(p) == 4:
-        p[0] = [p[2]] + p[3]
+    '''program : ROBOT_R VARS var_list
+               | ROBOT_R PROCS proc_def
+               | ROBOT_R instruction_block'''
+    if len(p) == 5:
+        if p[2] == 'VARS':
+            p[0] = ('declaration', p[3])
+        elif p[2] == 'PROCS':
+            p[0] = ('procedure_declaration', p[3])
     else:
-        p[0] = [p[2]]
+        p[0] = ('instruction_block', p[3])
 
-def p_procedure_def(p):
-    '''
+def p_var_list(p):
+    '''var_list : NAME var_list_tail
+                | NAME'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = [p[1]] + p[2]
 
-    procedure_def : ID "(" parameters ")" block
-    
-    '''
-    p[0] = ('procedure_def', p[1], p[3], p[5])
+def p_var_list_tail(p):
+    '''var_list_tail : COMMA NAME var_list_tail
+                     | COMMA NAME'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = [p[1]] + p[2]
+
+def p_proc_def(p):
+    '''proc_def : NAME LBRACKET parameters RBRACKET instruction_block
+                | NAME LBRACKET parameters RBRACKET instruction_block proc_def'''
+    if len(p) == 6:
+        p[0] = [('procedure', p[1], p[3], p[5])]
+    else:
+        p[0] = [('procedure', p[1], p[3], p[5])] + p[6]
 
 def p_parameters(p):
-    '''
-    
-    parameters : ID "," parameters
-                 | ID
-                 
-    '''
+    '''parameters : PIPE NAME parameters_tail PIPE
+                  | PIPE NAME PIPE'''
     if len(p) == 4:
-        p[0] = [p[1]] + p[3]
+        p[0] = [p[2]]
     else:
+        p[0] = [p[2]] + p[3]
+
+def p_parameters_tail(p):
+    '''parameters_tail : COMMA NAME parameters_tail
+                       | COMMA NAME'''
+    if len(p) == 2:
         p[0] = [p[1]]
-
-def p_conditional(p): #Declaracion condicionales
-    '''
-
-    conditional : IF condition THEN instructions ELSE instructions
-                   | IF condition THEN instructions
-                   
-    '''
-    if len(p) == 6:
-        p[0] = ('if', p[2], p[4], p[6])
     else:
-        p[0] = ('if', p[2], p[4])
+        p[0] = [p[1]] + p[2]
 
-def p_loop(p):
-    'loop : WHILE condition DO instructions'
-    p[0] = ('while', p[2], p[4])
-
-def p_repeat(p):
-    'repeat : REPEAT number TIMES instructions'
-    p[0] = ('repeat', p[2], p[4])
-
-def p_condition(p):
-    '''condition : FACING direction
-                 | CANPUT number X
-                 | CANPICK number X
-                 | CANMOVEINDIR number direction
-                 | CANJUMPINDIR number direction
-                 | CANMOVETOTHE number direction
-                 | CANJUMPTOTHE number direction
-                 | NOT condition'''
-    if p[1] == 'not':
-        p[0] = ('not', p[2])
+def p_instruction_block(p):
+    '''instruction_block : LBRACKET instructions RBRACKET
+                         | LBRACKET RBRACKET'''
+    if len(p) == 3:
+        p[0] = []
     else:
-        p[0] = (p[1], p[2], p[3])
+        p[0] = p[2]
 
-def p_block_instructions(p):
-    'block_instructions : LBRACKET instruction_list RBRACKET'
-    p[0] = p[2]
-
-def p_instruction_list(p):
-    '''instruction_list : instruction_list SEMICOLON instruction
-                        | instruction'''
-    if len(p) == 4:
-        p[0] = p[1] + [p[3]]
-    else:
+def p_instructions(p):
+    '''instructions : instruction instructions
+                    | instruction'''
+    if len(p) == 2:
         p[0] = [p[1]]
+    else:
+        p[0] = [p[1]] + p[2]
 
 def p_instruction(p):
     '''instruction : assignTo
@@ -294,10 +238,141 @@ def p_instruction(p):
                   | jumpInDir
                   | nop
                   | procedure_call
-                  | control_structure'''
+                  | control_structure
+    '''
     p[0] = p[1]
 
-    
+def p_assignTo(p):
+    '''assignTo : NAME ',' INT'''
+    p[0] = ('assignTo', p[1], p[3])
+
+def p_goto(p):
+    '''goto : INT ',' INT'''
+    p[0] = ('goto', p[1], p[3])
+
+def p_move(p):
+    '''move : INT'''
+    p[0] = ('move', p[1])
+
+def p_turn(p):
+    '''turn : LEFT
+           | RIGHT
+           | AROUND
+    '''
+    p[0] = ('turn', p[1])
+
+def p_face(p):
+    '''face : NORTH
+           | SOUTH
+           | EAST
+           | WEST
+    '''
+    p[0] = ('face', p[1])
+
+def p_put(p):
+    '''put : INT ',' BALLOONS
+          | INT ',' CHIPS
+    '''
+    p[0] = ('put', p[1], p[3])
+
+def p_pick(p):
+    '''pick : INT ',' BALLOONS
+           | INT ',' CHIPS
+    '''
+    p[0] = ('pick', p[1], p[3])
+
+def p_moveToThe(p):
+    '''moveToThe : INT ',' FRONT
+                | INT ',' LEFT
+                | INT ',' RIGHT
+                | INT ',' BACK
+    '''
+    p[0] = ('moveToThe', p[1], p[3])
+
+def p_moveInDir(p):
+    '''moveInDir : INT ',' NORTH
+                 | INT ',' SOUTH
+                 | INT ',' EAST
+                 | INT ',' WEST
+    '''
+    p[0] = ('moveInDir', p[1], p[3])
+
+def p_jumpToThe(p):
+    '''jumpToThe : INT ',' FRONT
+                | INT ',' LEFT
+                | INT ',' RIGHT
+                | INT ',' BACK
+    '''
+    p[0] = ('jumpToThe', p[1], p[3])
+
+def p_jumpInDir(p):
+    '''jumpInDir : INT ',' NORTH
+                 | INT ',' SOUTH
+                 | INT ',' EAST
+                 | INT ',' WEST
+    '''
+    p[0] = ('jumpInDir', p[1], p[3])
+
+def p_nop(p):
+    'instruction : NOP'
+    p[0] = ('nop',)
+
+def p_proccall(p):
+    'instruction : NAME COLON args'
+    p[0] = ('proccall', p[1], p[3])
+
+def p_controlstructure(p):
+    '''instruction : IF COLON condition THEN COLON instructions ELSE COLON instructions
+                   | WHILE COLON condition DO COLON instructions
+                   | REPEAT COLON args COLON instructions'''
+    if p[1] == 'if':
+        p[0] = ('if', p[3], p[6], p[9])
+    elif p[1] == 'while':
+        p[0] = ('while', p[3], p[6])
+    else:
+        p[0] = ('repeat', p[3], p[6])
+
+def p_condition(p):
+    '''condition : FACING NAME
+                 | CANPUT args COMMA NAME
+                 | CANPICK args COMMA NAME
+                 | CANMOVEINDIR args COMMA NAME
+                 | CANJUMPINDIR args COMMA NAME
+                 | CANMOVETOTHE args COMMA NAME
+                 | CANJUMPTOTHE args COMMA NAME
+                 | NOT condition'''
+    if p[1] == 'facing':
+        p[0] = ('facing', p[2])
+    elif p[1] == 'canput':
+        p[0] = ('canput', p[2], p[4])
+    elif p[1] == 'canpick':
+        p[0] = ('canpick', p[2], p[4])
+    elif p[1] == 'canmoveindir':
+        p[0] = ('canmoveindir', p[2], p[4])
+    elif p[1] == 'canjumpindir':
+        p[0] = ('canjumpindir', p[2], p[4])
+    elif p[1] == 'canmovetothe':
+        p[0] = ('canmovetothe', p[2], p[4])
+    elif p[1] == 'canjumptothe':
+        p[0] = ('canjumptothe', p[2], p[4])
+    else:
+        p[0] = ('not', p[2])
+
+def p_args(p):
+    '''args : arg
+            | arg COMMA args'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = [p[1]] + p[3]
+
+def p_arg(p):
+    '''arg : NAME
+           | INT'''
+    p[0] = p[1]
+
+def p_error(p):
+    print("Syntax error in line %d" % p.lineno)
 
 def p_empty(p):
     '''
@@ -307,5 +382,12 @@ def p_empty(p):
     '''
     p[0] = None
 
-parser = yacc.yacc
+parser = yacc.yacc()
+
+def parse_code(code : str):
+
+    result = parser.parse(code)
+
+    return result
+    
 

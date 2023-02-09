@@ -1,0 +1,202 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ASSINGTO
+    BOOL
+    CAMJUMPTOTHE
+    COMA
+    CORCHD
+    CORCHI
+    DPUNTOS
+    FACE
+    GOTO
+    JUMPINDIR
+    JUMPTOTHE
+    LINEA
+    MOVE
+    MOVEINDIR
+    MOVETOTHE
+    PCOMA
+    PICK
+    PUT
+    ROBOT_R
+    TURN
+    VAR
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> ROBOT VARS var_list program
+Rule 2     program -> ROBOT PROCS proc_def program
+Rule 3     program -> ROBOT R instruction_block
+Rule 4     var_list -> NAME var_list_tail
+Rule 5     var_list -> NAME
+Rule 6     var_list_tail -> COMMA NAME var_list_tail
+Rule 7     var_list_tail -> COMMA NAME
+Rule 8     proc_def -> NAME LBRACKET parameters RBRACKET instruction_block
+Rule 9     proc_def -> NAME LBRACKET parameters RBRACKET instruction_block proc_def
+Rule 10    parameters -> PIPE NAME parameters_tail PIPE
+Rule 11    parameters -> PIPE NAME PIPE
+Rule 12    parameters_tail -> COMMA NAME parameters_tail
+Rule 13    parameters_tail -> COMMA NAME
+Rule 14    instruction_block -> LBRACKET instructions RBRACKET
+Rule 15    instruction_block -> LBRACKET RBRACKET
+Rule 16    instructions -> instruction instructions
+Rule 17    instructions -> instruction
+Rule 18    instruction -> assignTo
+Rule 19    instruction -> goto
+Rule 20    instruction -> move
+Rule 21    instruction -> turn
+Rule 22    instruction -> face
+Rule 23    instruction -> put
+Rule 24    instruction -> pick
+Rule 25    instruction -> moveToThe
+Rule 26    instruction -> moveInDir
+Rule 27    instruction -> jumpToThe
+Rule 28    instruction -> jumpInDir
+Rule 29    instruction -> nop
+Rule 30    instruction -> procedure_call
+Rule 31    instruction -> control_structure
+Rule 32    assignTo -> NAME , INT
+Rule 33    goto -> INT , INT
+Rule 34    move -> INT
+Rule 35    turn -> LEFT
+Rule 36    turn -> RIGHT
+Rule 37    turn -> AROUND
+Rule 38    face -> NORTH
+Rule 39    face -> SOUTH
+Rule 40    face -> EAST
+Rule 41    face -> WEST
+Rule 42    put -> INT , BALLOONS
+Rule 43    put -> INT , CHIPS
+Rule 44    pick -> INT , BALLOONS
+Rule 45    pick -> INT , CHIPS
+Rule 46    moveToThe -> INT , FRONT
+Rule 47    moveToThe -> INT , LEFT
+Rule 48    moveToThe -> INT , RIGHT
+Rule 49    moveToThe -> INT , BACK
+Rule 50    moveInDir -> INT , NORTH
+Rule 51    moveInDir -> INT , SOUTH
+Rule 52    moveInDir -> INT , EAST
+Rule 53    moveInDir -> INT , WEST
+Rule 54    jumpToThe -> INT , FRONT
+Rule 55    jumpToThe -> INT , LEFT
+Rule 56    jumpToThe -> INT , RIGHT
+Rule 57    jumpToThe -> INT , BACK
+Rule 58    jumpInDir -> INT , NORTH
+Rule 59    jumpInDir -> INT , SOUTH
+Rule 60    jumpInDir -> INT , EAST
+Rule 61    jumpInDir -> INT , WEST
+Rule 62    instruction -> NOP
+Rule 63    instruction -> NAME COLON args
+Rule 64    instruction -> IF COLON condition THEN COLON instructions ELSE COLON instructions
+Rule 65    instruction -> WHILE COLON condition DO COLON instructions
+Rule 66    instruction -> REPEAT COLON args COLON instructions
+Rule 67    condition -> FACING NAME
+Rule 68    condition -> CANPUT args COMMA NAME
+Rule 69    condition -> CANPICK args COMMA NAME
+Rule 70    condition -> CANMOVEINDIR args COMMA NAME
+Rule 71    condition -> CANJUMPINDIR args COMMA NAME
+Rule 72    condition -> CANMOVETOTHE args COMMA NAME
+Rule 73    condition -> CANJUMPTOTHE args COMMA NAME
+Rule 74    condition -> NOT condition
+Rule 75    args -> arg
+Rule 76    args -> arg COMMA args
+Rule 77    arg -> NAME
+Rule 78    arg -> INT
+Rule 79    empty -> <empty>
+
+Terminals, with rules where they appear
+
+,                    : 32 33 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61
+ASSINGTO             : 
+BOOL                 : 
+CAMJUMPTOTHE         : 
+CANJUMPINDIR         : 71
+CANMOVEINDIR         : 70
+CANMOVETOTHE         : 72
+CANPICK              : 69
+CANPUT               : 68
+COMA                 : 
+CORCHD               : 
+CORCHI               : 
+DPUNTOS              : 
+ELSE                 : 64
+FACE                 : 
+FACING               : 67
+GOTO                 : 
+IF                   : 64
+INT                  : 32 33 33 34 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 78
+JUMPINDIR            : 
+JUMPTOTHE            : 
+LINEA                : 
+MOVE                 : 
+MOVEINDIR            : 
+MOVETOTHE            : 
+NAME                 : 4 5 6 7 8 9 10 11 12 13 32 63 67 68 69 70 71 72 73 77
+NOP                  : 62
+NOT                  : 74
+PCOMA                : 
+PICK                 : 
+PUT                  : 
+ROBOT_R              : 
+THEN                 : 64
+TURN                 : 
+VAR                  : 
+VARS                 : 1
+WHILE                : 65
+error                : 
+
+Nonterminals, with rules where they appear
+
+AROUND               : 37
+BACK                 : 49 57
+BALLOONS             : 42 44
+CANJUMPTOTHE         : 73
+CHIPS                : 43 45
+COLON                : 63 64 64 64 65 65 66 66
+COMMA                : 6 7 12 13 68 69 70 71 72 73 76
+DO                   : 65
+EAST                 : 40 52 60
+FRONT                : 46 54
+LBRACKET             : 8 9 14 15
+LEFT                 : 35 47 55
+NORTH                : 38 50 58
+PIPE                 : 10 10 11 11
+PROCS                : 2
+R                    : 3
+RBRACKET             : 8 9 14 15
+REPEAT               : 66
+RIGHT                : 36 48 56
+ROBOT                : 1 2 3
+SOUTH                : 39 51 59
+WEST                 : 41 53 61
+arg                  : 75 76
+args                 : 63 66 68 69 70 71 72 73 76
+assignTo             : 18
+condition            : 64 65 74
+control_structure    : 31
+empty                : 
+face                 : 22
+goto                 : 19
+instruction          : 16 17
+instruction_block    : 3 8 9
+instructions         : 14 16 64 64 65 66
+jumpInDir            : 28
+jumpToThe            : 27
+move                 : 20
+moveInDir            : 26
+moveToThe            : 25
+nop                  : 29
+parameters           : 8 9
+parameters_tail      : 10 12
+pick                 : 24
+proc_def             : 2 9
+procedure_call       : 30
+program              : 1 2 0
+put                  : 23
+turn                 : 21
+var_list             : 1
+var_list_tail        : 4 6
+
