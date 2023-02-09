@@ -157,9 +157,10 @@ def EVALUAR_CODIGO(texto : str)->bool:
 '''
 
 def p_program(p):
-    '''program : ROBOT_R VARS var_list
-               | ROBOT_R PROCS proc_def
-               | ROBOT_R instruction_block'''
+    '''program : ROBOT_R VARS var_list program
+               | ROBOT_R PROCS proc_def program
+               | ROBOT_R instruction_block
+               | empty'''
     if len(p) == 5:
         if p[2] == 'VARS':
             p[0] = ('declaration', p[3])
@@ -178,7 +179,8 @@ def p_var_list(p):
 
 def p_var_list_tail(p):
     '''var_list_tail : COMMA NAME var_list_tail
-                     | COMMA NAME'''
+                     | COMMA NAME
+                     | empty'''
     if len(p) == 2:
         p[0] = [p[1]]
     else:
@@ -186,7 +188,8 @@ def p_var_list_tail(p):
 
 def p_proc_def(p):
     '''proc_def : NAME LBRACKET parameters RBRACKET instruction_block
-                | NAME LBRACKET parameters RBRACKET instruction_block proc_def'''
+                | NAME LBRACKET parameters RBRACKET instruction_block proc_def
+                | empty'''
     if len(p) == 6:
         p[0] = [('procedure', p[1], p[3], p[5])]
     else:
@@ -210,7 +213,8 @@ def p_parameters_tail(p):
 
 def p_instruction_block(p):
     '''instruction_block : LBRACKET instructions RBRACKET
-                         | LBRACKET RBRACKET'''
+                         | LBRACKET RBRACKET
+                         | empty'''
     if len(p) == 3:
         p[0] = []
     else:
@@ -218,7 +222,8 @@ def p_instruction_block(p):
 
 def p_instructions(p):
     '''instructions : instruction instructions
-                    | instruction'''
+                    | instruction
+                    | empty'''
     if len(p) == 2:
         p[0] = [p[1]]
     else:
