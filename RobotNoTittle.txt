@@ -1,0 +1,25 @@
+VARS variable1, variable2, variable3
+
+PROCS 
+
+turnArround[ | | turn: around ]
+
+goFront [ | a | assignTo: 2 , variable3;
+if: canmovetothe: a, front then: [movetothe: a, front]
+else: [movetothe: variable3, front]
+
+putNpick [ || if: canPut: 1, chip then: [put: 1, chip] else: nop: ; 
+if: canPick: 1, chip then: [pick: 1, chip] else: nop:]
+
+
+
+[
+goFront:3
+
+]
+
+
+
+
+
+

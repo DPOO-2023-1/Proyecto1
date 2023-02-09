@@ -1,0 +1,6 @@
+ROBOT_R
+
+VARS variable1, variable2, variable3
+
+PROCS
+

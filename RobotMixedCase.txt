@@ -1,0 +1,20 @@
+RobOT_R
+VARS VARIABLE1, VARIABLE2, VARIABLE3
+
+PROCS 
+
+turnArround[ | | turn: around ]
+
+goFront [ | a | assignTo: 2 , variable3;
+if: CANMOVETOTHE: A, FRONT THEN: [MOVETOTHE: a, front]
+else: [movetothe: VARIABLE3, FRONT]
+
+putNpicK [ || IF: CANPUT: 1, chip then: [put: 1, chip] else: nop: ; 
+if: canPick: 1, chip then: [pick: 1, CHIP] else: nop:]
+
+
+
+[
+gOFRont:3
+
+]
