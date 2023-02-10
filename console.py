@@ -27,12 +27,13 @@ def EVALUARCODIGO ():
         print("Ingrese un nombre")
     
     texto = controller.CARGAR_ARCHIVO(nombre)
-    controller.EVALUARCODIGO(texto)
-
+    texto_tokenizado = controller.TOKENIZARCODIGO(texto)
+    #TODO Se cambio el parametro que recibe la respuesta y se guardo la respuesta tokenizada en una variable
     rta = controller.parse_code(texto)
 
     print(rta)
-    return texto
-
+    #TODO Se comento el return texto, ya que no se sentía pertinente. 
+    #return texto
+    
 CARGARMENU()
 

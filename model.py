@@ -161,8 +161,8 @@ def CARGAR_ARCHIVO(nombre : str)->str:
         linea = archivo.readline()
 
     return texto.lower()
-
-def EVALUAR_CODIGO(texto : str)->bool:
+#TODO se cambia el nombre de la función para que genere menor confusión. se quita su tipo de retorno bool.
+def TOKENIZAR_CODIGO(texto : str):
     lexer.input(texto)
     tokenized = []
     while True:
@@ -423,11 +423,12 @@ def p_empty(p):
     '''
     p[0] = None
 
+#TODO Se elimina el tipo de parametro que recibe la función del parser.
 parser = yacc.yacc()
 
-def parse_code(code : str):
+def parse_code(code_tokenizado):
 
-    result = parser.parse(code)
+    result = parser.parse(code_tokenizado)
 
     return result
     
