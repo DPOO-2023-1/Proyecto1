@@ -24,9 +24,9 @@ reserved = {"robot_r" : "ROBOT_R",
 
     "vars" : "VARS",
 
-    "goto" : "GOTO",
+    "procs" : "PROCS",
 
-    "var" : "VAR",
+    "goto" : "GOTO",
 
     "if" : "IF",
 
@@ -60,8 +60,6 @@ reserved = {"robot_r" : "ROBOT_R",
 
 #CONDICIONALES (RETURN A BOOL)
 
-    "bool" : "BOOL",
-
     "facing" : "FACING",
 
     "canput" : "CANPUT",
@@ -74,9 +72,43 @@ reserved = {"robot_r" : "ROBOT_R",
 
     "canmovetothe" : "CANMOVETOTHE",
 
-    "canjumptothe" : "CAMJUMPTOTHE",
+    "canjumptothe" : "CANJUMPTOTHE",
 
-    "not" : "NOT"}
+    "not" : "NOT",
+
+#extras
+
+    "left" : "LEFT",
+      
+    "right" : "RIGHT",
+     
+    "around" : "AROUND",
+
+    "north" : "NORTH",
+
+    "south" : "SOUTH",
+
+    "east" : "EAST",
+
+    "west" : "WEST",
+
+    "balloons" : "BALLOONS",
+
+    "chips" : "CHIPS",
+
+    "front" : "FRONT",
+
+    "back" : "BACK",
+
+    "do" : "DO",
+
+    "repeat" : "REPEAT",
+
+    "procedure_call" : "procedure_call",
+
+    "control_structure": "control_structure"
+    
+    }
 
 tokens = tokens + list(reserved.values())
 
@@ -94,6 +126,10 @@ def t_NAME(t):
     t.type = reserved.get(t.value,"NAME") #Checar las palabras reservadas
     return t
 
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
 t_CORCHI = r"\["
 
 t_CORCHD = r"\]"
@@ -106,17 +142,9 @@ t_COMA = r"\,"
 
 t_LINEA = r"\|"
 
-''''
-
-def t_VAR(t):
-    r"[a-zA-Z_][a-zA-Z_0-9]*" #PENDIENTE REVISIÓN
-    t.type = "VAR"
-    return t
-'''''
 
 def t_error(t):
      print("Illegal character '%s'" % t.value[0])
-     t.lexer.skip(1)
 
 
 
@@ -129,7 +157,7 @@ def CARGAR_ARCHIVO(nombre : str)->str:
     linea = archivo.readline()
     texto = ""
     while linea != "":
-        texto += linea.replace("\n"," ")
+        texto += linea
         linea = archivo.readline()
 
     return texto.lower()
@@ -156,18 +184,27 @@ def EVALUAR_CODIGO(texto : str)->bool:
 
 '''
 
+
 def p_program(p):
-    '''program : ROBOT_R VARS var_list program
-               | ROBOT_R PROCS proc_def program
-               | ROBOT_R instruction_block
-               | empty'''
-    if len(p) == 5:
-        if p[2] == 'VARS':
-            p[0] = ('declaration', p[3])
-        elif p[2] == 'PROCS':
-            p[0] = ('procedure_declaration', p[3])
+    '''program : ROBOT_R VARS var_list PROCS proc_def instruction_block
+                | ROBOT_R PROCS proc_def instruction_block
+                | ROBOT_R VARS instruction_block
+                | ROBOT_R instruction_block
+                | ROBOT_R PROCS
+                | ROBOT_R VARS
+                | ROBOT_R
+                | empty'''
+    if len(p) == 7:
+        p[0] = (p[1], p[2], p[3], p[4], p[5], p[6])
+    elif len(p) == 5:
+        p[0] = (p[1], p[2], p[3], p[4])
+    elif len(p) == 4:
+        p[0] = (p[1], p[2], p[3])
+    elif len(p) == 3:
+        p[0] = (p[1], p[2])
     else:
-        p[0] = ('instruction_block', p[3])
+        p[0] = p[1]
+
 
 def p_var_list(p):
     '''var_list : NAME var_list_tail
@@ -178,43 +215,45 @@ def p_var_list(p):
         p[0] = [p[1]] + p[2]
 
 def p_var_list_tail(p):
-    '''var_list_tail : COMMA NAME var_list_tail
-                     | COMMA NAME
-                     | empty'''
-    if len(p) == 2:
-        p[0] = [p[1]]
+    '''var_list_tail : COMA NAME var_list_tail PCOMA
+                     | COMA NAME PCOMA'''
+    if len(p) == 4:
+        p[0] = [p[2]]
     else:
-        p[0] = [p[1]] + p[2]
+        p[0] = [p[2]] + p[3]
 
 def p_proc_def(p):
-    '''proc_def : NAME LBRACKET parameters RBRACKET instruction_block
-                | NAME LBRACKET parameters RBRACKET instruction_block proc_def
-                | empty'''
+    '''proc_def : NAME CORCHI parameters CORCHD instruction_block
+                | NAME CORCHI parameters CORCHD instruction_block proc_def '''
+    
     if len(p) == 6:
         p[0] = [('procedure', p[1], p[3], p[5])]
     else:
         p[0] = [('procedure', p[1], p[3], p[5])] + p[6]
 
 def p_parameters(p):
-    '''parameters : PIPE NAME parameters_tail PIPE
-                  | PIPE NAME PIPE'''
+    '''parameters : LINEA NAME parameters_tail LINEA
+                  | LINEA NAME LINEA
+    '''
+
     if len(p) == 4:
         p[0] = [p[2]]
     else:
         p[0] = [p[2]] + p[3]
 
 def p_parameters_tail(p):
-    '''parameters_tail : COMMA NAME parameters_tail
-                       | COMMA NAME'''
+    '''parameters_tail : COMA NAME parameters_tail
+                       | COMA NAME
+    '''
     if len(p) == 2:
         p[0] = [p[1]]
     else:
         p[0] = [p[1]] + p[2]
 
 def p_instruction_block(p):
-    '''instruction_block : LBRACKET instructions RBRACKET
-                         | LBRACKET RBRACKET
-                         | empty'''
+    '''instruction_block : CORCHI instructions CORCHD
+                         | CORCHI CORCHD
+    '''
     if len(p) == 3:
         p[0] = []
     else:
@@ -223,7 +262,7 @@ def p_instruction_block(p):
 def p_instructions(p):
     '''instructions : instruction instructions
                     | instruction
-                    | empty'''
+    '''
     if len(p) == 2:
         p[0] = [p[1]]
     else:
@@ -241,95 +280,92 @@ def p_instruction(p):
                   | moveInDir
                   | jumpToThe
                   | jumpInDir
-                  | nop
+                  | NOP
                   | procedure_call
                   | control_structure
     '''
     p[0] = p[1]
 
 def p_assignTo(p):
-    '''assignTo : NAME ',' INT'''
-    p[0] = ('assignTo', p[1], p[3])
+    '''assignTo : ASSINGTO PCOMA NAME COMA INT'''
+    p[0] = ( p[1], p[2], p[3], p[4], p[5])
 
 def p_goto(p):
-    '''goto : INT ',' INT'''
-    p[0] = ('goto', p[1], p[3])
+    '''goto : GOTO DPUNTOS INT COMA INT'''
+    p[0] = ( p[1], p[2] ,p[3], p[4], p[5])
 
 def p_move(p):
-    '''move : INT'''
-    p[0] = ('move', p[1])
+    '''move : MOVE DPUNTOS INT'''
+    p[0] = (p[1], p[2], p[3])
 
 def p_turn(p):
-    '''turn : LEFT
-           | RIGHT
-           | AROUND
+    '''turn : TURN DPUNTOS LEFT
+           | TURN DPUNTOS RIGHT
+           | TURN DPUNTOS AROUND
     '''
-    p[0] = ('turn', p[1])
+    p[0] = (p[1], p[2], p[3])
+
 
 def p_face(p):
-    '''face : NORTH
-           | SOUTH
-           | EAST
-           | WEST
+    '''face : FACE DPUNTOS NORTH
+           | FACE DPUNTOS SOUTH
+           | FACE DPUNTOS EAST
+           | FACE DPUNTOS WEST
     '''
-    p[0] = ('face', p[1])
+    p[0] =  (p[1], p[2], p[3])
 
 def p_put(p):
-    '''put : INT ',' BALLOONS
-          | INT ',' CHIPS
+    '''put : PUT DPUNTOS INT COMA BALLOONS
+          | PUT DPUNTOS INT COMA CHIPS
     '''
-    p[0] = ('put', p[1], p[3])
+    p[0] = ( p[1], p[2], p[3] ,p[4], p[5])
 
 def p_pick(p):
-    '''pick : INT ',' BALLOONS
-           | INT ',' CHIPS
+    '''pick : PICK DPUNTOS INT COMA BALLOONS
+           | PICK DPUNTOS INT COMA CHIPS
     '''
-    p[0] = ('pick', p[1], p[3])
+    p[0] = ( p[1], p[2], p[3], p[4], p[5])
 
 def p_moveToThe(p):
-    '''moveToThe : INT ',' FRONT
-                | INT ',' LEFT
-                | INT ',' RIGHT
-                | INT ',' BACK
+    '''moveToThe : MOVETOTHE DPUNTOS INT COMA FRONT
+                | MOVETOTHE DPUNTOS INT COMA LEFT
+                | MOVETOTHE DPUNTOS INT COMA RIGHT
+                | MOVETOTHE DPUNTOS INT COMA BACK
     '''
-    p[0] = ('moveToThe', p[1], p[3])
+    p[0] = (p[1], p[2], p[3], p[4], p[5])
 
 def p_moveInDir(p):
-    '''moveInDir : INT ',' NORTH
-                 | INT ',' SOUTH
-                 | INT ',' EAST
-                 | INT ',' WEST
+    '''moveInDir : MOVEINDIR DPUNTOS INT COMA NORTH
+                 | MOVEINDIR DPUNTOS INT COMA SOUTH
+                 | MOVEINDIR DPUNTOS INT COMA EAST
+                 | MOVEINDIR DPUNTOS INT COMA WEST
     '''
-    p[0] = ('moveInDir', p[1], p[3])
+    p[0] = (p[1], p[2], p[3], p[4], p[5])
 
 def p_jumpToThe(p):
-    '''jumpToThe : INT ',' FRONT
-                | INT ',' LEFT
-                | INT ',' RIGHT
-                | INT ',' BACK
+    '''jumpToThe : JUMPTOTHE DPUNTOS INT COMA FRONT
+                | JUMPTOTHE DPUNTOS INT COMA LEFT
+                | JUMPTOTHE DPUNTOS INT COMA RIGHT
+                | JUMPTOTHE DPUNTOS INT COMA BACK
     '''
-    p[0] = ('jumpToThe', p[1], p[3])
+    p[0] = (p[1], p[2], p[3], p[4], p[5])
 
 def p_jumpInDir(p):
-    '''jumpInDir : INT ',' NORTH
-                 | INT ',' SOUTH
-                 | INT ',' EAST
-                 | INT ',' WEST
+    '''jumpInDir : JUMPINDIR DPUNTOS INT COMA NORTH
+                 | JUMPINDIR DPUNTOS INT COMA SOUTH
+                 | JUMPINDIR DPUNTOS INT COMA EAST
+                 | JUMPINDIR DPUNTOS INT COMA WEST
     '''
-    p[0] = ('jumpInDir', p[1], p[3])
-
-def p_nop(p):
-    'instruction : NOP'
-    p[0] = ('nop',)
+    p[0] = (p[1], p[2], p[3], p[4], p[5])
 
 def p_proccall(p):
-    'instruction : NAME COLON args'
+    'instruction : NAME DPUNTOS args'
     p[0] = ('proccall', p[1], p[3])
 
 def p_controlstructure(p):
-    '''instruction : IF COLON condition THEN COLON instructions ELSE COLON instructions
-                   | WHILE COLON condition DO COLON instructions
-                   | REPEAT COLON args COLON instructions'''
+    '''instruction : IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+                   | WHILE DPUNTOS condition DO DPUNTOS instructions
+                   | REPEAT DPUNTOS args DPUNTOS instructions'''
     if p[1] == 'if':
         p[0] = ('if', p[3], p[6], p[9])
     elif p[1] == 'while':
@@ -339,12 +375,12 @@ def p_controlstructure(p):
 
 def p_condition(p):
     '''condition : FACING NAME
-                 | CANPUT args COMMA NAME
-                 | CANPICK args COMMA NAME
-                 | CANMOVEINDIR args COMMA NAME
-                 | CANJUMPINDIR args COMMA NAME
-                 | CANMOVETOTHE args COMMA NAME
-                 | CANJUMPTOTHE args COMMA NAME
+                 | CANPUT args COMA NAME
+                 | CANPICK args COMA NAME
+                 | CANMOVEINDIR args COMA NAME
+                 | CANJUMPINDIR args COMA NAME
+                 | CANMOVETOTHE args COMA NAME
+                 | CANJUMPTOTHE args COMA NAME
                  | NOT condition'''
     if p[1] == 'facing':
         p[0] = ('facing', p[2])
@@ -365,7 +401,7 @@ def p_condition(p):
 
 def p_args(p):
     '''args : arg
-            | arg COMMA args'''
+            | arg COMA args'''
     if len(p) == 2:
         p[0] = [p[1]]
     else:

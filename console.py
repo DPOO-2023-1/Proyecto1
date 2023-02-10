@@ -29,9 +29,8 @@ def EVALUARCODIGO ():
     texto = controller.CARGAR_ARCHIVO(nombre)
     controller.EVALUARCODIGO(texto)
 
-    rta = controller.parse_code
+    rta = controller.parse_code(texto)
 
-    print(texto)
     print(rta)
     return texto
 

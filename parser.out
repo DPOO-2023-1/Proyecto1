@@ -1,53 +1,30 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    ASSINGTO
-    BOOL
-    CAMJUMPTOTHE
-    COMA
-    CORCHD
-    CORCHI
-    DPUNTOS
-    FACE
-    GOTO
-    JUMPINDIR
-    JUMPTOTHE
-    LINEA
-    MOVE
-    MOVEINDIR
-    MOVETOTHE
-    PCOMA
-    PICK
-    PUT
-    TURN
-    VAR
-
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> ROBOT_R VARS var_list program
-Rule 2     program -> ROBOT_R PROCS proc_def program
-Rule 3     program -> ROBOT_R instruction_block
-Rule 4     program -> empty
-Rule 5     var_list -> NAME var_list_tail
-Rule 6     var_list -> NAME
-Rule 7     var_list_tail -> COMMA NAME var_list_tail
-Rule 8     var_list_tail -> COMMA NAME
-Rule 9     var_list_tail -> empty
-Rule 10    proc_def -> NAME LBRACKET parameters RBRACKET instruction_block
-Rule 11    proc_def -> NAME LBRACKET parameters RBRACKET instruction_block proc_def
-Rule 12    proc_def -> empty
-Rule 13    parameters -> PIPE NAME parameters_tail PIPE
-Rule 14    parameters -> PIPE NAME PIPE
-Rule 15    parameters_tail -> COMMA NAME parameters_tail
-Rule 16    parameters_tail -> COMMA NAME
-Rule 17    instruction_block -> LBRACKET instructions RBRACKET
-Rule 18    instruction_block -> LBRACKET RBRACKET
-Rule 19    instruction_block -> empty
-Rule 20    instructions -> instruction instructions
-Rule 21    instructions -> instruction
-Rule 22    instructions -> empty
+Rule 1     program -> ROBOT_R VARS var_list PROCS proc_def instruction_block
+Rule 2     program -> ROBOT_R PROCS proc_def instruction_block
+Rule 3     program -> ROBOT_R VARS instruction_block
+Rule 4     program -> ROBOT_R instruction_block
+Rule 5     program -> ROBOT_R PROCS
+Rule 6     program -> ROBOT_R VARS
+Rule 7     program -> ROBOT_R
+Rule 8     program -> empty
+Rule 9     var_list -> NAME var_list_tail
+Rule 10    var_list -> NAME
+Rule 11    var_list_tail -> COMA NAME var_list_tail PCOMA
+Rule 12    var_list_tail -> COMA NAME PCOMA
+Rule 13    proc_def -> NAME CORCHI parameters CORCHD instruction_block
+Rule 14    proc_def -> NAME CORCHI parameters CORCHD instruction_block proc_def
+Rule 15    parameters -> LINEA NAME parameters_tail LINEA
+Rule 16    parameters -> LINEA NAME LINEA
+Rule 17    parameters_tail -> COMA NAME parameters_tail
+Rule 18    parameters_tail -> COMA NAME
+Rule 19    instruction_block -> CORCHI instructions CORCHD
+Rule 20    instruction_block -> CORCHI CORCHD
+Rule 21    instructions -> instruction instructions
+Rule 22    instructions -> instruction
 Rule 23    instruction -> assignTo
 Rule 24    instruction -> goto
 Rule 25    instruction -> move
@@ -59,146 +36,3247 @@ Rule 30    instruction -> moveToThe
 Rule 31    instruction -> moveInDir
 Rule 32    instruction -> jumpToThe
 Rule 33    instruction -> jumpInDir
-Rule 34    instruction -> nop
+Rule 34    instruction -> NOP
 Rule 35    instruction -> procedure_call
 Rule 36    instruction -> control_structure
-Rule 37    assignTo -> NAME , INT
-Rule 38    goto -> INT , INT
-Rule 39    move -> INT
-Rule 40    turn -> LEFT
-Rule 41    turn -> RIGHT
-Rule 42    turn -> AROUND
-Rule 43    face -> NORTH
-Rule 44    face -> SOUTH
-Rule 45    face -> EAST
-Rule 46    face -> WEST
-Rule 47    put -> INT , BALLOONS
-Rule 48    put -> INT , CHIPS
-Rule 49    pick -> INT , BALLOONS
-Rule 50    pick -> INT , CHIPS
-Rule 51    moveToThe -> INT , FRONT
-Rule 52    moveToThe -> INT , LEFT
-Rule 53    moveToThe -> INT , RIGHT
-Rule 54    moveToThe -> INT , BACK
-Rule 55    moveInDir -> INT , NORTH
-Rule 56    moveInDir -> INT , SOUTH
-Rule 57    moveInDir -> INT , EAST
-Rule 58    moveInDir -> INT , WEST
-Rule 59    jumpToThe -> INT , FRONT
-Rule 60    jumpToThe -> INT , LEFT
-Rule 61    jumpToThe -> INT , RIGHT
-Rule 62    jumpToThe -> INT , BACK
-Rule 63    jumpInDir -> INT , NORTH
-Rule 64    jumpInDir -> INT , SOUTH
-Rule 65    jumpInDir -> INT , EAST
-Rule 66    jumpInDir -> INT , WEST
-Rule 67    instruction -> NOP
-Rule 68    instruction -> NAME COLON args
-Rule 69    instruction -> IF COLON condition THEN COLON instructions ELSE COLON instructions
-Rule 70    instruction -> WHILE COLON condition DO COLON instructions
-Rule 71    instruction -> REPEAT COLON args COLON instructions
-Rule 72    condition -> FACING NAME
-Rule 73    condition -> CANPUT args COMMA NAME
-Rule 74    condition -> CANPICK args COMMA NAME
-Rule 75    condition -> CANMOVEINDIR args COMMA NAME
-Rule 76    condition -> CANJUMPINDIR args COMMA NAME
-Rule 77    condition -> CANMOVETOTHE args COMMA NAME
-Rule 78    condition -> CANJUMPTOTHE args COMMA NAME
-Rule 79    condition -> NOT condition
-Rule 80    args -> arg
-Rule 81    args -> arg COMMA args
-Rule 82    arg -> NAME
-Rule 83    arg -> INT
-Rule 84    empty -> <empty>
+Rule 37    assignTo -> ASSINGTO PCOMA NAME COMA INT
+Rule 38    goto -> GOTO DPUNTOS INT COMA INT
+Rule 39    move -> MOVE DPUNTOS INT
+Rule 40    turn -> TURN DPUNTOS LEFT
+Rule 41    turn -> TURN DPUNTOS RIGHT
+Rule 42    turn -> TURN DPUNTOS AROUND
+Rule 43    face -> FACE DPUNTOS NORTH
+Rule 44    face -> FACE DPUNTOS SOUTH
+Rule 45    face -> FACE DPUNTOS EAST
+Rule 46    face -> FACE DPUNTOS WEST
+Rule 47    put -> PUT DPUNTOS INT COMA BALLOONS
+Rule 48    put -> PUT DPUNTOS INT COMA CHIPS
+Rule 49    pick -> PICK DPUNTOS INT COMA BALLOONS
+Rule 50    pick -> PICK DPUNTOS INT COMA CHIPS
+Rule 51    moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT
+Rule 52    moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT
+Rule 53    moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT
+Rule 54    moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK
+Rule 55    moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH
+Rule 56    moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH
+Rule 57    moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST
+Rule 58    moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST
+Rule 59    jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT
+Rule 60    jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT
+Rule 61    jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT
+Rule 62    jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK
+Rule 63    jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH
+Rule 64    jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH
+Rule 65    jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST
+Rule 66    jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST
+Rule 67    instruction -> NAME DPUNTOS args
+Rule 68    instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+Rule 69    instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions
+Rule 70    instruction -> REPEAT DPUNTOS args DPUNTOS instructions
+Rule 71    condition -> FACING NAME
+Rule 72    condition -> CANPUT args COMA NAME
+Rule 73    condition -> CANPICK args COMA NAME
+Rule 74    condition -> CANMOVEINDIR args COMA NAME
+Rule 75    condition -> CANJUMPINDIR args COMA NAME
+Rule 76    condition -> CANMOVETOTHE args COMA NAME
+Rule 77    condition -> CANJUMPTOTHE args COMA NAME
+Rule 78    condition -> NOT condition
+Rule 79    args -> arg
+Rule 80    args -> arg COMA args
+Rule 81    arg -> NAME
+Rule 82    arg -> INT
+Rule 83    empty -> <empty>
 
 Terminals, with rules where they appear
 
-,                    : 37 38 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66
-ASSINGTO             : 
-BOOL                 : 
-CAMJUMPTOTHE         : 
-CANJUMPINDIR         : 76
-CANMOVEINDIR         : 75
-CANMOVETOTHE         : 77
-CANPICK              : 74
-CANPUT               : 73
-COMA                 : 
-CORCHD               : 
-CORCHI               : 
-DPUNTOS              : 
-ELSE                 : 69
-FACE                 : 
-FACING               : 72
-GOTO                 : 
-IF                   : 69
-INT                  : 37 38 38 39 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 83
-JUMPINDIR            : 
-JUMPTOTHE            : 
-LINEA                : 
-MOVE                 : 
-MOVEINDIR            : 
-MOVETOTHE            : 
-NAME                 : 5 6 7 8 10 11 13 14 15 16 37 68 72 73 74 75 76 77 78 82
-NOP                  : 67
-NOT                  : 79
-PCOMA                : 
-PICK                 : 
-PUT                  : 
-ROBOT_R              : 1 2 3
-THEN                 : 69
-TURN                 : 
-VAR                  : 
-VARS                 : 1
-WHILE                : 70
+AROUND               : 42
+ASSINGTO             : 37
+BACK                 : 54 62
+BALLOONS             : 47 49
+CANJUMPINDIR         : 75
+CANJUMPTOTHE         : 77
+CANMOVEINDIR         : 74
+CANMOVETOTHE         : 76
+CANPICK              : 73
+CANPUT               : 72
+CHIPS                : 48 50
+COMA                 : 11 12 17 18 37 38 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 72 73 74 75 76 77 80
+CORCHD               : 13 14 19 20
+CORCHI               : 13 14 19 20
+DO                   : 69
+DPUNTOS              : 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 68 68 69 69 70 70
+EAST                 : 45 57 65
+ELSE                 : 68
+FACE                 : 43 44 45 46
+FACING               : 71
+FRONT                : 51 59
+GOTO                 : 38
+IF                   : 68
+INT                  : 37 38 38 39 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 82
+JUMPINDIR            : 63 64 65 66
+JUMPTOTHE            : 59 60 61 62
+LEFT                 : 40 52 60
+LINEA                : 15 15 16 16
+MOVE                 : 39
+MOVEINDIR            : 55 56 57 58
+MOVETOTHE            : 51 52 53 54
+NAME                 : 9 10 11 12 13 14 15 16 17 18 37 67 71 72 73 74 75 76 77 81
+NOP                  : 34
+NORTH                : 43 55 63
+NOT                  : 78
+PCOMA                : 11 12 37
+PICK                 : 49 50
+PROCS                : 1 2 5
+PUT                  : 47 48
+REPEAT               : 70
+RIGHT                : 41 53 61
+ROBOT_R              : 1 2 3 4 5 6 7
+SOUTH                : 44 56 64
+THEN                 : 68
+TURN                 : 40 41 42
+VARS                 : 1 3 6
+WEST                 : 46 58 66
+WHILE                : 69
+control_structure    : 36
 error                : 
+procedure_call       : 35
 
 Nonterminals, with rules where they appear
 
-AROUND               : 42
-BACK                 : 54 62
-BALLOONS             : 47 49
-CANJUMPTOTHE         : 78
-CHIPS                : 48 50
-COLON                : 68 69 69 69 70 70 71 71
-COMMA                : 7 8 15 16 73 74 75 76 77 78 81
-DO                   : 70
-EAST                 : 45 57 65
-FRONT                : 51 59
-LBRACKET             : 10 11 17 18
-LEFT                 : 40 52 60
-NORTH                : 43 55 63
-PIPE                 : 13 13 14 14
-PROCS                : 2
-RBRACKET             : 10 11 17 18
-REPEAT               : 71
-RIGHT                : 41 53 61
-SOUTH                : 44 56 64
-WEST                 : 46 58 66
-arg                  : 80 81
-args                 : 68 71 73 74 75 76 77 78 81
+arg                  : 79 80
+args                 : 67 70 72 73 74 75 76 77 80
 assignTo             : 23
-condition            : 69 70 79
-control_structure    : 36
-empty                : 4 9 12 19 22
+condition            : 68 69 78
+empty                : 8
 face                 : 27
 goto                 : 24
-instruction          : 20 21
-instruction_block    : 3 10 11
-instructions         : 17 20 69 69 70 71
+instruction          : 21 22
+instruction_block    : 1 2 3 4 13 14
+instructions         : 19 21 68 68 69 70
 jumpInDir            : 33
 jumpToThe            : 32
 move                 : 25
 moveInDir            : 31
 moveToThe            : 30
-nop                  : 34
-parameters           : 10 11
-parameters_tail      : 13 15
+parameters           : 13 14
+parameters_tail      : 15 17
 pick                 : 29
-proc_def             : 2 11
-procedure_call       : 35
-program              : 1 2 0
+proc_def             : 1 2 14
+program              : 0
 put                  : 28
 turn                 : 26
 var_list             : 1
-var_list_tail        : 5 7
+var_list_tail        : 9 11
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . ROBOT_R VARS var_list PROCS proc_def instruction_block
+    (2) program -> . ROBOT_R PROCS proc_def instruction_block
+    (3) program -> . ROBOT_R VARS instruction_block
+    (4) program -> . ROBOT_R instruction_block
+    (5) program -> . ROBOT_R PROCS
+    (6) program -> . ROBOT_R VARS
+    (7) program -> . ROBOT_R
+    (8) program -> . empty
+    (83) empty -> .
+
+    ROBOT_R         shift and go to state 2
+    $end            reduce using rule 83 (empty -> .)
+
+    program                        shift and go to state 1
+    empty                          shift and go to state 3
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> ROBOT_R . VARS var_list PROCS proc_def instruction_block
+    (2) program -> ROBOT_R . PROCS proc_def instruction_block
+    (3) program -> ROBOT_R . VARS instruction_block
+    (4) program -> ROBOT_R . instruction_block
+    (5) program -> ROBOT_R . PROCS
+    (6) program -> ROBOT_R . VARS
+    (7) program -> ROBOT_R .
+    (19) instruction_block -> . CORCHI instructions CORCHD
+    (20) instruction_block -> . CORCHI CORCHD
+
+    VARS            shift and go to state 4
+    PROCS           shift and go to state 5
+    $end            reduce using rule 7 (program -> ROBOT_R .)
+    CORCHI          shift and go to state 7
+
+    instruction_block              shift and go to state 6
+
+state 3
+
+    (8) program -> empty .
+
+    $end            reduce using rule 8 (program -> empty .)
+
+
+state 4
+
+    (1) program -> ROBOT_R VARS . var_list PROCS proc_def instruction_block
+    (3) program -> ROBOT_R VARS . instruction_block
+    (6) program -> ROBOT_R VARS .
+    (9) var_list -> . NAME var_list_tail
+    (10) var_list -> . NAME
+    (19) instruction_block -> . CORCHI instructions CORCHD
+    (20) instruction_block -> . CORCHI CORCHD
+
+    $end            reduce using rule 6 (program -> ROBOT_R VARS .)
+    NAME            shift and go to state 10
+    CORCHI          shift and go to state 7
+
+    var_list                       shift and go to state 8
+    instruction_block              shift and go to state 9
+
+state 5
+
+    (2) program -> ROBOT_R PROCS . proc_def instruction_block
+    (5) program -> ROBOT_R PROCS .
+    (13) proc_def -> . NAME CORCHI parameters CORCHD instruction_block
+    (14) proc_def -> . NAME CORCHI parameters CORCHD instruction_block proc_def
+
+    $end            reduce using rule 5 (program -> ROBOT_R PROCS .)
+    NAME            shift and go to state 12
+
+    proc_def                       shift and go to state 11
+
+state 6
+
+    (4) program -> ROBOT_R instruction_block .
+
+    $end            reduce using rule 4 (program -> ROBOT_R instruction_block .)
+
+
+state 7
+
+    (19) instruction_block -> CORCHI . instructions CORCHD
+    (20) instruction_block -> CORCHI . CORCHD
+    (21) instructions -> . instruction instructions
+    (22) instructions -> . instruction
+    (23) instruction -> . assignTo
+    (24) instruction -> . goto
+    (25) instruction -> . move
+    (26) instruction -> . turn
+    (27) instruction -> . face
+    (28) instruction -> . put
+    (29) instruction -> . pick
+    (30) instruction -> . moveToThe
+    (31) instruction -> . moveInDir
+    (32) instruction -> . jumpToThe
+    (33) instruction -> . jumpInDir
+    (34) instruction -> . NOP
+    (35) instruction -> . procedure_call
+    (36) instruction -> . control_structure
+    (67) instruction -> . NAME DPUNTOS args
+    (68) instruction -> . IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+    (69) instruction -> . WHILE DPUNTOS condition DO DPUNTOS instructions
+    (70) instruction -> . REPEAT DPUNTOS args DPUNTOS instructions
+    (37) assignTo -> . ASSINGTO PCOMA NAME COMA INT
+    (38) goto -> . GOTO DPUNTOS INT COMA INT
+    (39) move -> . MOVE DPUNTOS INT
+    (40) turn -> . TURN DPUNTOS LEFT
+    (41) turn -> . TURN DPUNTOS RIGHT
+    (42) turn -> . TURN DPUNTOS AROUND
+    (43) face -> . FACE DPUNTOS NORTH
+    (44) face -> . FACE DPUNTOS SOUTH
+    (45) face -> . FACE DPUNTOS EAST
+    (46) face -> . FACE DPUNTOS WEST
+    (47) put -> . PUT DPUNTOS INT COMA BALLOONS
+    (48) put -> . PUT DPUNTOS INT COMA CHIPS
+    (49) pick -> . PICK DPUNTOS INT COMA BALLOONS
+    (50) pick -> . PICK DPUNTOS INT COMA CHIPS
+    (51) moveToThe -> . MOVETOTHE DPUNTOS INT COMA FRONT
+    (52) moveToThe -> . MOVETOTHE DPUNTOS INT COMA LEFT
+    (53) moveToThe -> . MOVETOTHE DPUNTOS INT COMA RIGHT
+    (54) moveToThe -> . MOVETOTHE DPUNTOS INT COMA BACK
+    (55) moveInDir -> . MOVEINDIR DPUNTOS INT COMA NORTH
+    (56) moveInDir -> . MOVEINDIR DPUNTOS INT COMA SOUTH
+    (57) moveInDir -> . MOVEINDIR DPUNTOS INT COMA EAST
+    (58) moveInDir -> . MOVEINDIR DPUNTOS INT COMA WEST
+    (59) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA FRONT
+    (60) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA LEFT
+    (61) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA RIGHT
+    (62) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA BACK
+    (63) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA NORTH
+    (64) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA SOUTH
+    (65) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA EAST
+    (66) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA WEST
+
+    CORCHD          shift and go to state 14
+    NOP             shift and go to state 27
+    procedure_call  shift and go to state 28
+    control_structure shift and go to state 29
+    NAME            shift and go to state 30
+    IF              shift and go to state 31
+    WHILE           shift and go to state 32
+    REPEAT          shift and go to state 33
+    ASSINGTO        shift and go to state 34
+    GOTO            shift and go to state 35
+    MOVE            shift and go to state 36
+    TURN            shift and go to state 37
+    FACE            shift and go to state 38
+    PUT             shift and go to state 39
+    PICK            shift and go to state 40
+    MOVETOTHE       shift and go to state 41
+    MOVEINDIR       shift and go to state 42
+    JUMPTOTHE       shift and go to state 43
+    JUMPINDIR       shift and go to state 44
+
+    instructions                   shift and go to state 13
+    instruction                    shift and go to state 15
+    assignTo                       shift and go to state 16
+    goto                           shift and go to state 17
+    move                           shift and go to state 18
+    turn                           shift and go to state 19
+    face                           shift and go to state 20
+    put                            shift and go to state 21
+    pick                           shift and go to state 22
+    moveToThe                      shift and go to state 23
+    moveInDir                      shift and go to state 24
+    jumpToThe                      shift and go to state 25
+    jumpInDir                      shift and go to state 26
+
+state 8
+
+    (1) program -> ROBOT_R VARS var_list . PROCS proc_def instruction_block
+
+    PROCS           shift and go to state 45
+
+
+state 9
+
+    (3) program -> ROBOT_R VARS instruction_block .
+
+    $end            reduce using rule 3 (program -> ROBOT_R VARS instruction_block .)
+
+
+state 10
+
+    (9) var_list -> NAME . var_list_tail
+    (10) var_list -> NAME .
+    (11) var_list_tail -> . COMA NAME var_list_tail PCOMA
+    (12) var_list_tail -> . COMA NAME PCOMA
+
+    PROCS           reduce using rule 10 (var_list -> NAME .)
+    COMA            shift and go to state 47
+
+    var_list_tail                  shift and go to state 46
+
+state 11
+
+    (2) program -> ROBOT_R PROCS proc_def . instruction_block
+    (19) instruction_block -> . CORCHI instructions CORCHD
+    (20) instruction_block -> . CORCHI CORCHD
+
+    CORCHI          shift and go to state 7
+
+    instruction_block              shift and go to state 48
+
+state 12
+
+    (13) proc_def -> NAME . CORCHI parameters CORCHD instruction_block
+    (14) proc_def -> NAME . CORCHI parameters CORCHD instruction_block proc_def
+
+    CORCHI          shift and go to state 49
+
+
+state 13
+
+    (19) instruction_block -> CORCHI instructions . CORCHD
+
+    CORCHD          shift and go to state 50
+
+
+state 14
+
+    (20) instruction_block -> CORCHI CORCHD .
+
+    $end            reduce using rule 20 (instruction_block -> CORCHI CORCHD .)
+    NAME            reduce using rule 20 (instruction_block -> CORCHI CORCHD .)
+    CORCHI          reduce using rule 20 (instruction_block -> CORCHI CORCHD .)
+
+
+state 15
+
+    (21) instructions -> instruction . instructions
+    (22) instructions -> instruction .
+    (21) instructions -> . instruction instructions
+    (22) instructions -> . instruction
+    (23) instruction -> . assignTo
+    (24) instruction -> . goto
+    (25) instruction -> . move
+    (26) instruction -> . turn
+    (27) instruction -> . face
+    (28) instruction -> . put
+    (29) instruction -> . pick
+    (30) instruction -> . moveToThe
+    (31) instruction -> . moveInDir
+    (32) instruction -> . jumpToThe
+    (33) instruction -> . jumpInDir
+    (34) instruction -> . NOP
+    (35) instruction -> . procedure_call
+    (36) instruction -> . control_structure
+    (67) instruction -> . NAME DPUNTOS args
+    (68) instruction -> . IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+    (69) instruction -> . WHILE DPUNTOS condition DO DPUNTOS instructions
+    (70) instruction -> . REPEAT DPUNTOS args DPUNTOS instructions
+    (37) assignTo -> . ASSINGTO PCOMA NAME COMA INT
+    (38) goto -> . GOTO DPUNTOS INT COMA INT
+    (39) move -> . MOVE DPUNTOS INT
+    (40) turn -> . TURN DPUNTOS LEFT
+    (41) turn -> . TURN DPUNTOS RIGHT
+    (42) turn -> . TURN DPUNTOS AROUND
+    (43) face -> . FACE DPUNTOS NORTH
+    (44) face -> . FACE DPUNTOS SOUTH
+    (45) face -> . FACE DPUNTOS EAST
+    (46) face -> . FACE DPUNTOS WEST
+    (47) put -> . PUT DPUNTOS INT COMA BALLOONS
+    (48) put -> . PUT DPUNTOS INT COMA CHIPS
+    (49) pick -> . PICK DPUNTOS INT COMA BALLOONS
+    (50) pick -> . PICK DPUNTOS INT COMA CHIPS
+    (51) moveToThe -> . MOVETOTHE DPUNTOS INT COMA FRONT
+    (52) moveToThe -> . MOVETOTHE DPUNTOS INT COMA LEFT
+    (53) moveToThe -> . MOVETOTHE DPUNTOS INT COMA RIGHT
+    (54) moveToThe -> . MOVETOTHE DPUNTOS INT COMA BACK
+    (55) moveInDir -> . MOVEINDIR DPUNTOS INT COMA NORTH
+    (56) moveInDir -> . MOVEINDIR DPUNTOS INT COMA SOUTH
+    (57) moveInDir -> . MOVEINDIR DPUNTOS INT COMA EAST
+    (58) moveInDir -> . MOVEINDIR DPUNTOS INT COMA WEST
+    (59) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA FRONT
+    (60) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA LEFT
+    (61) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA RIGHT
+    (62) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA BACK
+    (63) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA NORTH
+    (64) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA SOUTH
+    (65) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA EAST
+    (66) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA WEST
+
+  ! shift/reduce conflict for NOP resolved as shift
+  ! shift/reduce conflict for procedure_call resolved as shift
+  ! shift/reduce conflict for control_structure resolved as shift
+  ! shift/reduce conflict for NAME resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for REPEAT resolved as shift
+  ! shift/reduce conflict for ASSINGTO resolved as shift
+  ! shift/reduce conflict for GOTO resolved as shift
+  ! shift/reduce conflict for MOVE resolved as shift
+  ! shift/reduce conflict for TURN resolved as shift
+  ! shift/reduce conflict for FACE resolved as shift
+  ! shift/reduce conflict for PUT resolved as shift
+  ! shift/reduce conflict for PICK resolved as shift
+  ! shift/reduce conflict for MOVETOTHE resolved as shift
+  ! shift/reduce conflict for MOVEINDIR resolved as shift
+  ! shift/reduce conflict for JUMPTOTHE resolved as shift
+  ! shift/reduce conflict for JUMPINDIR resolved as shift
+    CORCHD          reduce using rule 22 (instructions -> instruction .)
+    ELSE            reduce using rule 22 (instructions -> instruction .)
+    NOP             shift and go to state 27
+    procedure_call  shift and go to state 28
+    control_structure shift and go to state 29
+    NAME            shift and go to state 30
+    IF              shift and go to state 31
+    WHILE           shift and go to state 32
+    REPEAT          shift and go to state 33
+    ASSINGTO        shift and go to state 34
+    GOTO            shift and go to state 35
+    MOVE            shift and go to state 36
+    TURN            shift and go to state 37
+    FACE            shift and go to state 38
+    PUT             shift and go to state 39
+    PICK            shift and go to state 40
+    MOVETOTHE       shift and go to state 41
+    MOVEINDIR       shift and go to state 42
+    JUMPTOTHE       shift and go to state 43
+    JUMPINDIR       shift and go to state 44
+
+  ! NOP             [ reduce using rule 22 (instructions -> instruction .) ]
+  ! procedure_call  [ reduce using rule 22 (instructions -> instruction .) ]
+  ! control_structure [ reduce using rule 22 (instructions -> instruction .) ]
+  ! NAME            [ reduce using rule 22 (instructions -> instruction .) ]
+  ! IF              [ reduce using rule 22 (instructions -> instruction .) ]
+  ! WHILE           [ reduce using rule 22 (instructions -> instruction .) ]
+  ! REPEAT          [ reduce using rule 22 (instructions -> instruction .) ]
+  ! ASSINGTO        [ reduce using rule 22 (instructions -> instruction .) ]
+  ! GOTO            [ reduce using rule 22 (instructions -> instruction .) ]
+  ! MOVE            [ reduce using rule 22 (instructions -> instruction .) ]
+  ! TURN            [ reduce using rule 22 (instructions -> instruction .) ]
+  ! FACE            [ reduce using rule 22 (instructions -> instruction .) ]
+  ! PUT             [ reduce using rule 22 (instructions -> instruction .) ]
+  ! PICK            [ reduce using rule 22 (instructions -> instruction .) ]
+  ! MOVETOTHE       [ reduce using rule 22 (instructions -> instruction .) ]
+  ! MOVEINDIR       [ reduce using rule 22 (instructions -> instruction .) ]
+  ! JUMPTOTHE       [ reduce using rule 22 (instructions -> instruction .) ]
+  ! JUMPINDIR       [ reduce using rule 22 (instructions -> instruction .) ]
+
+    instruction                    shift and go to state 15
+    instructions                   shift and go to state 51
+    assignTo                       shift and go to state 16
+    goto                           shift and go to state 17
+    move                           shift and go to state 18
+    turn                           shift and go to state 19
+    face                           shift and go to state 20
+    put                            shift and go to state 21
+    pick                           shift and go to state 22
+    moveToThe                      shift and go to state 23
+    moveInDir                      shift and go to state 24
+    jumpToThe                      shift and go to state 25
+    jumpInDir                      shift and go to state 26
+
+state 16
+
+    (23) instruction -> assignTo .
+
+    NOP             reduce using rule 23 (instruction -> assignTo .)
+    procedure_call  reduce using rule 23 (instruction -> assignTo .)
+    control_structure reduce using rule 23 (instruction -> assignTo .)
+    NAME            reduce using rule 23 (instruction -> assignTo .)
+    IF              reduce using rule 23 (instruction -> assignTo .)
+    WHILE           reduce using rule 23 (instruction -> assignTo .)
+    REPEAT          reduce using rule 23 (instruction -> assignTo .)
+    ASSINGTO        reduce using rule 23 (instruction -> assignTo .)
+    GOTO            reduce using rule 23 (instruction -> assignTo .)
+    MOVE            reduce using rule 23 (instruction -> assignTo .)
+    TURN            reduce using rule 23 (instruction -> assignTo .)
+    FACE            reduce using rule 23 (instruction -> assignTo .)
+    PUT             reduce using rule 23 (instruction -> assignTo .)
+    PICK            reduce using rule 23 (instruction -> assignTo .)
+    MOVETOTHE       reduce using rule 23 (instruction -> assignTo .)
+    MOVEINDIR       reduce using rule 23 (instruction -> assignTo .)
+    JUMPTOTHE       reduce using rule 23 (instruction -> assignTo .)
+    JUMPINDIR       reduce using rule 23 (instruction -> assignTo .)
+    CORCHD          reduce using rule 23 (instruction -> assignTo .)
+    ELSE            reduce using rule 23 (instruction -> assignTo .)
+
+
+state 17
+
+    (24) instruction -> goto .
+
+    NOP             reduce using rule 24 (instruction -> goto .)
+    procedure_call  reduce using rule 24 (instruction -> goto .)
+    control_structure reduce using rule 24 (instruction -> goto .)
+    NAME            reduce using rule 24 (instruction -> goto .)
+    IF              reduce using rule 24 (instruction -> goto .)
+    WHILE           reduce using rule 24 (instruction -> goto .)
+    REPEAT          reduce using rule 24 (instruction -> goto .)
+    ASSINGTO        reduce using rule 24 (instruction -> goto .)
+    GOTO            reduce using rule 24 (instruction -> goto .)
+    MOVE            reduce using rule 24 (instruction -> goto .)
+    TURN            reduce using rule 24 (instruction -> goto .)
+    FACE            reduce using rule 24 (instruction -> goto .)
+    PUT             reduce using rule 24 (instruction -> goto .)
+    PICK            reduce using rule 24 (instruction -> goto .)
+    MOVETOTHE       reduce using rule 24 (instruction -> goto .)
+    MOVEINDIR       reduce using rule 24 (instruction -> goto .)
+    JUMPTOTHE       reduce using rule 24 (instruction -> goto .)
+    JUMPINDIR       reduce using rule 24 (instruction -> goto .)
+    CORCHD          reduce using rule 24 (instruction -> goto .)
+    ELSE            reduce using rule 24 (instruction -> goto .)
+
+
+state 18
+
+    (25) instruction -> move .
+
+    NOP             reduce using rule 25 (instruction -> move .)
+    procedure_call  reduce using rule 25 (instruction -> move .)
+    control_structure reduce using rule 25 (instruction -> move .)
+    NAME            reduce using rule 25 (instruction -> move .)
+    IF              reduce using rule 25 (instruction -> move .)
+    WHILE           reduce using rule 25 (instruction -> move .)
+    REPEAT          reduce using rule 25 (instruction -> move .)
+    ASSINGTO        reduce using rule 25 (instruction -> move .)
+    GOTO            reduce using rule 25 (instruction -> move .)
+    MOVE            reduce using rule 25 (instruction -> move .)
+    TURN            reduce using rule 25 (instruction -> move .)
+    FACE            reduce using rule 25 (instruction -> move .)
+    PUT             reduce using rule 25 (instruction -> move .)
+    PICK            reduce using rule 25 (instruction -> move .)
+    MOVETOTHE       reduce using rule 25 (instruction -> move .)
+    MOVEINDIR       reduce using rule 25 (instruction -> move .)
+    JUMPTOTHE       reduce using rule 25 (instruction -> move .)
+    JUMPINDIR       reduce using rule 25 (instruction -> move .)
+    CORCHD          reduce using rule 25 (instruction -> move .)
+    ELSE            reduce using rule 25 (instruction -> move .)
+
+
+state 19
+
+    (26) instruction -> turn .
+
+    NOP             reduce using rule 26 (instruction -> turn .)
+    procedure_call  reduce using rule 26 (instruction -> turn .)
+    control_structure reduce using rule 26 (instruction -> turn .)
+    NAME            reduce using rule 26 (instruction -> turn .)
+    IF              reduce using rule 26 (instruction -> turn .)
+    WHILE           reduce using rule 26 (instruction -> turn .)
+    REPEAT          reduce using rule 26 (instruction -> turn .)
+    ASSINGTO        reduce using rule 26 (instruction -> turn .)
+    GOTO            reduce using rule 26 (instruction -> turn .)
+    MOVE            reduce using rule 26 (instruction -> turn .)
+    TURN            reduce using rule 26 (instruction -> turn .)
+    FACE            reduce using rule 26 (instruction -> turn .)
+    PUT             reduce using rule 26 (instruction -> turn .)
+    PICK            reduce using rule 26 (instruction -> turn .)
+    MOVETOTHE       reduce using rule 26 (instruction -> turn .)
+    MOVEINDIR       reduce using rule 26 (instruction -> turn .)
+    JUMPTOTHE       reduce using rule 26 (instruction -> turn .)
+    JUMPINDIR       reduce using rule 26 (instruction -> turn .)
+    CORCHD          reduce using rule 26 (instruction -> turn .)
+    ELSE            reduce using rule 26 (instruction -> turn .)
+
+
+state 20
+
+    (27) instruction -> face .
+
+    NOP             reduce using rule 27 (instruction -> face .)
+    procedure_call  reduce using rule 27 (instruction -> face .)
+    control_structure reduce using rule 27 (instruction -> face .)
+    NAME            reduce using rule 27 (instruction -> face .)
+    IF              reduce using rule 27 (instruction -> face .)
+    WHILE           reduce using rule 27 (instruction -> face .)
+    REPEAT          reduce using rule 27 (instruction -> face .)
+    ASSINGTO        reduce using rule 27 (instruction -> face .)
+    GOTO            reduce using rule 27 (instruction -> face .)
+    MOVE            reduce using rule 27 (instruction -> face .)
+    TURN            reduce using rule 27 (instruction -> face .)
+    FACE            reduce using rule 27 (instruction -> face .)
+    PUT             reduce using rule 27 (instruction -> face .)
+    PICK            reduce using rule 27 (instruction -> face .)
+    MOVETOTHE       reduce using rule 27 (instruction -> face .)
+    MOVEINDIR       reduce using rule 27 (instruction -> face .)
+    JUMPTOTHE       reduce using rule 27 (instruction -> face .)
+    JUMPINDIR       reduce using rule 27 (instruction -> face .)
+    CORCHD          reduce using rule 27 (instruction -> face .)
+    ELSE            reduce using rule 27 (instruction -> face .)
+
+
+state 21
+
+    (28) instruction -> put .
+
+    NOP             reduce using rule 28 (instruction -> put .)
+    procedure_call  reduce using rule 28 (instruction -> put .)
+    control_structure reduce using rule 28 (instruction -> put .)
+    NAME            reduce using rule 28 (instruction -> put .)
+    IF              reduce using rule 28 (instruction -> put .)
+    WHILE           reduce using rule 28 (instruction -> put .)
+    REPEAT          reduce using rule 28 (instruction -> put .)
+    ASSINGTO        reduce using rule 28 (instruction -> put .)
+    GOTO            reduce using rule 28 (instruction -> put .)
+    MOVE            reduce using rule 28 (instruction -> put .)
+    TURN            reduce using rule 28 (instruction -> put .)
+    FACE            reduce using rule 28 (instruction -> put .)
+    PUT             reduce using rule 28 (instruction -> put .)
+    PICK            reduce using rule 28 (instruction -> put .)
+    MOVETOTHE       reduce using rule 28 (instruction -> put .)
+    MOVEINDIR       reduce using rule 28 (instruction -> put .)
+    JUMPTOTHE       reduce using rule 28 (instruction -> put .)
+    JUMPINDIR       reduce using rule 28 (instruction -> put .)
+    CORCHD          reduce using rule 28 (instruction -> put .)
+    ELSE            reduce using rule 28 (instruction -> put .)
+
+
+state 22
+
+    (29) instruction -> pick .
+
+    NOP             reduce using rule 29 (instruction -> pick .)
+    procedure_call  reduce using rule 29 (instruction -> pick .)
+    control_structure reduce using rule 29 (instruction -> pick .)
+    NAME            reduce using rule 29 (instruction -> pick .)
+    IF              reduce using rule 29 (instruction -> pick .)
+    WHILE           reduce using rule 29 (instruction -> pick .)
+    REPEAT          reduce using rule 29 (instruction -> pick .)
+    ASSINGTO        reduce using rule 29 (instruction -> pick .)
+    GOTO            reduce using rule 29 (instruction -> pick .)
+    MOVE            reduce using rule 29 (instruction -> pick .)
+    TURN            reduce using rule 29 (instruction -> pick .)
+    FACE            reduce using rule 29 (instruction -> pick .)
+    PUT             reduce using rule 29 (instruction -> pick .)
+    PICK            reduce using rule 29 (instruction -> pick .)
+    MOVETOTHE       reduce using rule 29 (instruction -> pick .)
+    MOVEINDIR       reduce using rule 29 (instruction -> pick .)
+    JUMPTOTHE       reduce using rule 29 (instruction -> pick .)
+    JUMPINDIR       reduce using rule 29 (instruction -> pick .)
+    CORCHD          reduce using rule 29 (instruction -> pick .)
+    ELSE            reduce using rule 29 (instruction -> pick .)
+
+
+state 23
+
+    (30) instruction -> moveToThe .
+
+    NOP             reduce using rule 30 (instruction -> moveToThe .)
+    procedure_call  reduce using rule 30 (instruction -> moveToThe .)
+    control_structure reduce using rule 30 (instruction -> moveToThe .)
+    NAME            reduce using rule 30 (instruction -> moveToThe .)
+    IF              reduce using rule 30 (instruction -> moveToThe .)
+    WHILE           reduce using rule 30 (instruction -> moveToThe .)
+    REPEAT          reduce using rule 30 (instruction -> moveToThe .)
+    ASSINGTO        reduce using rule 30 (instruction -> moveToThe .)
+    GOTO            reduce using rule 30 (instruction -> moveToThe .)
+    MOVE            reduce using rule 30 (instruction -> moveToThe .)
+    TURN            reduce using rule 30 (instruction -> moveToThe .)
+    FACE            reduce using rule 30 (instruction -> moveToThe .)
+    PUT             reduce using rule 30 (instruction -> moveToThe .)
+    PICK            reduce using rule 30 (instruction -> moveToThe .)
+    MOVETOTHE       reduce using rule 30 (instruction -> moveToThe .)
+    MOVEINDIR       reduce using rule 30 (instruction -> moveToThe .)
+    JUMPTOTHE       reduce using rule 30 (instruction -> moveToThe .)
+    JUMPINDIR       reduce using rule 30 (instruction -> moveToThe .)
+    CORCHD          reduce using rule 30 (instruction -> moveToThe .)
+    ELSE            reduce using rule 30 (instruction -> moveToThe .)
+
+
+state 24
+
+    (31) instruction -> moveInDir .
+
+    NOP             reduce using rule 31 (instruction -> moveInDir .)
+    procedure_call  reduce using rule 31 (instruction -> moveInDir .)
+    control_structure reduce using rule 31 (instruction -> moveInDir .)
+    NAME            reduce using rule 31 (instruction -> moveInDir .)
+    IF              reduce using rule 31 (instruction -> moveInDir .)
+    WHILE           reduce using rule 31 (instruction -> moveInDir .)
+    REPEAT          reduce using rule 31 (instruction -> moveInDir .)
+    ASSINGTO        reduce using rule 31 (instruction -> moveInDir .)
+    GOTO            reduce using rule 31 (instruction -> moveInDir .)
+    MOVE            reduce using rule 31 (instruction -> moveInDir .)
+    TURN            reduce using rule 31 (instruction -> moveInDir .)
+    FACE            reduce using rule 31 (instruction -> moveInDir .)
+    PUT             reduce using rule 31 (instruction -> moveInDir .)
+    PICK            reduce using rule 31 (instruction -> moveInDir .)
+    MOVETOTHE       reduce using rule 31 (instruction -> moveInDir .)
+    MOVEINDIR       reduce using rule 31 (instruction -> moveInDir .)
+    JUMPTOTHE       reduce using rule 31 (instruction -> moveInDir .)
+    JUMPINDIR       reduce using rule 31 (instruction -> moveInDir .)
+    CORCHD          reduce using rule 31 (instruction -> moveInDir .)
+    ELSE            reduce using rule 31 (instruction -> moveInDir .)
+
+
+state 25
+
+    (32) instruction -> jumpToThe .
+
+    NOP             reduce using rule 32 (instruction -> jumpToThe .)
+    procedure_call  reduce using rule 32 (instruction -> jumpToThe .)
+    control_structure reduce using rule 32 (instruction -> jumpToThe .)
+    NAME            reduce using rule 32 (instruction -> jumpToThe .)
+    IF              reduce using rule 32 (instruction -> jumpToThe .)
+    WHILE           reduce using rule 32 (instruction -> jumpToThe .)
+    REPEAT          reduce using rule 32 (instruction -> jumpToThe .)
+    ASSINGTO        reduce using rule 32 (instruction -> jumpToThe .)
+    GOTO            reduce using rule 32 (instruction -> jumpToThe .)
+    MOVE            reduce using rule 32 (instruction -> jumpToThe .)
+    TURN            reduce using rule 32 (instruction -> jumpToThe .)
+    FACE            reduce using rule 32 (instruction -> jumpToThe .)
+    PUT             reduce using rule 32 (instruction -> jumpToThe .)
+    PICK            reduce using rule 32 (instruction -> jumpToThe .)
+    MOVETOTHE       reduce using rule 32 (instruction -> jumpToThe .)
+    MOVEINDIR       reduce using rule 32 (instruction -> jumpToThe .)
+    JUMPTOTHE       reduce using rule 32 (instruction -> jumpToThe .)
+    JUMPINDIR       reduce using rule 32 (instruction -> jumpToThe .)
+    CORCHD          reduce using rule 32 (instruction -> jumpToThe .)
+    ELSE            reduce using rule 32 (instruction -> jumpToThe .)
+
+
+state 26
+
+    (33) instruction -> jumpInDir .
+
+    NOP             reduce using rule 33 (instruction -> jumpInDir .)
+    procedure_call  reduce using rule 33 (instruction -> jumpInDir .)
+    control_structure reduce using rule 33 (instruction -> jumpInDir .)
+    NAME            reduce using rule 33 (instruction -> jumpInDir .)
+    IF              reduce using rule 33 (instruction -> jumpInDir .)
+    WHILE           reduce using rule 33 (instruction -> jumpInDir .)
+    REPEAT          reduce using rule 33 (instruction -> jumpInDir .)
+    ASSINGTO        reduce using rule 33 (instruction -> jumpInDir .)
+    GOTO            reduce using rule 33 (instruction -> jumpInDir .)
+    MOVE            reduce using rule 33 (instruction -> jumpInDir .)
+    TURN            reduce using rule 33 (instruction -> jumpInDir .)
+    FACE            reduce using rule 33 (instruction -> jumpInDir .)
+    PUT             reduce using rule 33 (instruction -> jumpInDir .)
+    PICK            reduce using rule 33 (instruction -> jumpInDir .)
+    MOVETOTHE       reduce using rule 33 (instruction -> jumpInDir .)
+    MOVEINDIR       reduce using rule 33 (instruction -> jumpInDir .)
+    JUMPTOTHE       reduce using rule 33 (instruction -> jumpInDir .)
+    JUMPINDIR       reduce using rule 33 (instruction -> jumpInDir .)
+    CORCHD          reduce using rule 33 (instruction -> jumpInDir .)
+    ELSE            reduce using rule 33 (instruction -> jumpInDir .)
+
+
+state 27
+
+    (34) instruction -> NOP .
+
+    NOP             reduce using rule 34 (instruction -> NOP .)
+    procedure_call  reduce using rule 34 (instruction -> NOP .)
+    control_structure reduce using rule 34 (instruction -> NOP .)
+    NAME            reduce using rule 34 (instruction -> NOP .)
+    IF              reduce using rule 34 (instruction -> NOP .)
+    WHILE           reduce using rule 34 (instruction -> NOP .)
+    REPEAT          reduce using rule 34 (instruction -> NOP .)
+    ASSINGTO        reduce using rule 34 (instruction -> NOP .)
+    GOTO            reduce using rule 34 (instruction -> NOP .)
+    MOVE            reduce using rule 34 (instruction -> NOP .)
+    TURN            reduce using rule 34 (instruction -> NOP .)
+    FACE            reduce using rule 34 (instruction -> NOP .)
+    PUT             reduce using rule 34 (instruction -> NOP .)
+    PICK            reduce using rule 34 (instruction -> NOP .)
+    MOVETOTHE       reduce using rule 34 (instruction -> NOP .)
+    MOVEINDIR       reduce using rule 34 (instruction -> NOP .)
+    JUMPTOTHE       reduce using rule 34 (instruction -> NOP .)
+    JUMPINDIR       reduce using rule 34 (instruction -> NOP .)
+    CORCHD          reduce using rule 34 (instruction -> NOP .)
+    ELSE            reduce using rule 34 (instruction -> NOP .)
+
+
+state 28
+
+    (35) instruction -> procedure_call .
+
+    NOP             reduce using rule 35 (instruction -> procedure_call .)
+    procedure_call  reduce using rule 35 (instruction -> procedure_call .)
+    control_structure reduce using rule 35 (instruction -> procedure_call .)
+    NAME            reduce using rule 35 (instruction -> procedure_call .)
+    IF              reduce using rule 35 (instruction -> procedure_call .)
+    WHILE           reduce using rule 35 (instruction -> procedure_call .)
+    REPEAT          reduce using rule 35 (instruction -> procedure_call .)
+    ASSINGTO        reduce using rule 35 (instruction -> procedure_call .)
+    GOTO            reduce using rule 35 (instruction -> procedure_call .)
+    MOVE            reduce using rule 35 (instruction -> procedure_call .)
+    TURN            reduce using rule 35 (instruction -> procedure_call .)
+    FACE            reduce using rule 35 (instruction -> procedure_call .)
+    PUT             reduce using rule 35 (instruction -> procedure_call .)
+    PICK            reduce using rule 35 (instruction -> procedure_call .)
+    MOVETOTHE       reduce using rule 35 (instruction -> procedure_call .)
+    MOVEINDIR       reduce using rule 35 (instruction -> procedure_call .)
+    JUMPTOTHE       reduce using rule 35 (instruction -> procedure_call .)
+    JUMPINDIR       reduce using rule 35 (instruction -> procedure_call .)
+    CORCHD          reduce using rule 35 (instruction -> procedure_call .)
+    ELSE            reduce using rule 35 (instruction -> procedure_call .)
+
+
+state 29
+
+    (36) instruction -> control_structure .
+
+    NOP             reduce using rule 36 (instruction -> control_structure .)
+    procedure_call  reduce using rule 36 (instruction -> control_structure .)
+    control_structure reduce using rule 36 (instruction -> control_structure .)
+    NAME            reduce using rule 36 (instruction -> control_structure .)
+    IF              reduce using rule 36 (instruction -> control_structure .)
+    WHILE           reduce using rule 36 (instruction -> control_structure .)
+    REPEAT          reduce using rule 36 (instruction -> control_structure .)
+    ASSINGTO        reduce using rule 36 (instruction -> control_structure .)
+    GOTO            reduce using rule 36 (instruction -> control_structure .)
+    MOVE            reduce using rule 36 (instruction -> control_structure .)
+    TURN            reduce using rule 36 (instruction -> control_structure .)
+    FACE            reduce using rule 36 (instruction -> control_structure .)
+    PUT             reduce using rule 36 (instruction -> control_structure .)
+    PICK            reduce using rule 36 (instruction -> control_structure .)
+    MOVETOTHE       reduce using rule 36 (instruction -> control_structure .)
+    MOVEINDIR       reduce using rule 36 (instruction -> control_structure .)
+    JUMPTOTHE       reduce using rule 36 (instruction -> control_structure .)
+    JUMPINDIR       reduce using rule 36 (instruction -> control_structure .)
+    CORCHD          reduce using rule 36 (instruction -> control_structure .)
+    ELSE            reduce using rule 36 (instruction -> control_structure .)
+
+
+state 30
+
+    (67) instruction -> NAME . DPUNTOS args
+
+    DPUNTOS         shift and go to state 52
+
+
+state 31
+
+    (68) instruction -> IF . DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+
+    DPUNTOS         shift and go to state 53
+
+
+state 32
+
+    (69) instruction -> WHILE . DPUNTOS condition DO DPUNTOS instructions
+
+    DPUNTOS         shift and go to state 54
+
+
+state 33
+
+    (70) instruction -> REPEAT . DPUNTOS args DPUNTOS instructions
+
+    DPUNTOS         shift and go to state 55
+
+
+state 34
+
+    (37) assignTo -> ASSINGTO . PCOMA NAME COMA INT
+
+    PCOMA           shift and go to state 56
+
+
+state 35
+
+    (38) goto -> GOTO . DPUNTOS INT COMA INT
+
+    DPUNTOS         shift and go to state 57
+
+
+state 36
+
+    (39) move -> MOVE . DPUNTOS INT
+
+    DPUNTOS         shift and go to state 58
+
+
+state 37
+
+    (40) turn -> TURN . DPUNTOS LEFT
+    (41) turn -> TURN . DPUNTOS RIGHT
+    (42) turn -> TURN . DPUNTOS AROUND
+
+    DPUNTOS         shift and go to state 59
+
+
+state 38
+
+    (43) face -> FACE . DPUNTOS NORTH
+    (44) face -> FACE . DPUNTOS SOUTH
+    (45) face -> FACE . DPUNTOS EAST
+    (46) face -> FACE . DPUNTOS WEST
+
+    DPUNTOS         shift and go to state 60
+
+
+state 39
+
+    (47) put -> PUT . DPUNTOS INT COMA BALLOONS
+    (48) put -> PUT . DPUNTOS INT COMA CHIPS
+
+    DPUNTOS         shift and go to state 61
+
+
+state 40
+
+    (49) pick -> PICK . DPUNTOS INT COMA BALLOONS
+    (50) pick -> PICK . DPUNTOS INT COMA CHIPS
+
+    DPUNTOS         shift and go to state 62
+
+
+state 41
+
+    (51) moveToThe -> MOVETOTHE . DPUNTOS INT COMA FRONT
+    (52) moveToThe -> MOVETOTHE . DPUNTOS INT COMA LEFT
+    (53) moveToThe -> MOVETOTHE . DPUNTOS INT COMA RIGHT
+    (54) moveToThe -> MOVETOTHE . DPUNTOS INT COMA BACK
+
+    DPUNTOS         shift and go to state 63
+
+
+state 42
+
+    (55) moveInDir -> MOVEINDIR . DPUNTOS INT COMA NORTH
+    (56) moveInDir -> MOVEINDIR . DPUNTOS INT COMA SOUTH
+    (57) moveInDir -> MOVEINDIR . DPUNTOS INT COMA EAST
+    (58) moveInDir -> MOVEINDIR . DPUNTOS INT COMA WEST
+
+    DPUNTOS         shift and go to state 64
+
+
+state 43
+
+    (59) jumpToThe -> JUMPTOTHE . DPUNTOS INT COMA FRONT
+    (60) jumpToThe -> JUMPTOTHE . DPUNTOS INT COMA LEFT
+    (61) jumpToThe -> JUMPTOTHE . DPUNTOS INT COMA RIGHT
+    (62) jumpToThe -> JUMPTOTHE . DPUNTOS INT COMA BACK
+
+    DPUNTOS         shift and go to state 65
+
+
+state 44
+
+    (63) jumpInDir -> JUMPINDIR . DPUNTOS INT COMA NORTH
+    (64) jumpInDir -> JUMPINDIR . DPUNTOS INT COMA SOUTH
+    (65) jumpInDir -> JUMPINDIR . DPUNTOS INT COMA EAST
+    (66) jumpInDir -> JUMPINDIR . DPUNTOS INT COMA WEST
+
+    DPUNTOS         shift and go to state 66
+
+
+state 45
+
+    (1) program -> ROBOT_R VARS var_list PROCS . proc_def instruction_block
+    (13) proc_def -> . NAME CORCHI parameters CORCHD instruction_block
+    (14) proc_def -> . NAME CORCHI parameters CORCHD instruction_block proc_def
+
+    NAME            shift and go to state 12
+
+    proc_def                       shift and go to state 67
+
+state 46
+
+    (9) var_list -> NAME var_list_tail .
+
+    PROCS           reduce using rule 9 (var_list -> NAME var_list_tail .)
+
+
+state 47
+
+    (11) var_list_tail -> COMA . NAME var_list_tail PCOMA
+    (12) var_list_tail -> COMA . NAME PCOMA
+
+    NAME            shift and go to state 68
+
+
+state 48
+
+    (2) program -> ROBOT_R PROCS proc_def instruction_block .
+
+    $end            reduce using rule 2 (program -> ROBOT_R PROCS proc_def instruction_block .)
+
+
+state 49
+
+    (13) proc_def -> NAME CORCHI . parameters CORCHD instruction_block
+    (14) proc_def -> NAME CORCHI . parameters CORCHD instruction_block proc_def
+    (15) parameters -> . LINEA NAME parameters_tail LINEA
+    (16) parameters -> . LINEA NAME LINEA
+
+    LINEA           shift and go to state 70
+
+    parameters                     shift and go to state 69
+
+state 50
+
+    (19) instruction_block -> CORCHI instructions CORCHD .
+
+    $end            reduce using rule 19 (instruction_block -> CORCHI instructions CORCHD .)
+    NAME            reduce using rule 19 (instruction_block -> CORCHI instructions CORCHD .)
+    CORCHI          reduce using rule 19 (instruction_block -> CORCHI instructions CORCHD .)
+
+
+state 51
+
+    (21) instructions -> instruction instructions .
+
+    CORCHD          reduce using rule 21 (instructions -> instruction instructions .)
+    NOP             reduce using rule 21 (instructions -> instruction instructions .)
+    procedure_call  reduce using rule 21 (instructions -> instruction instructions .)
+    control_structure reduce using rule 21 (instructions -> instruction instructions .)
+    NAME            reduce using rule 21 (instructions -> instruction instructions .)
+    IF              reduce using rule 21 (instructions -> instruction instructions .)
+    WHILE           reduce using rule 21 (instructions -> instruction instructions .)
+    REPEAT          reduce using rule 21 (instructions -> instruction instructions .)
+    ASSINGTO        reduce using rule 21 (instructions -> instruction instructions .)
+    GOTO            reduce using rule 21 (instructions -> instruction instructions .)
+    MOVE            reduce using rule 21 (instructions -> instruction instructions .)
+    TURN            reduce using rule 21 (instructions -> instruction instructions .)
+    FACE            reduce using rule 21 (instructions -> instruction instructions .)
+    PUT             reduce using rule 21 (instructions -> instruction instructions .)
+    PICK            reduce using rule 21 (instructions -> instruction instructions .)
+    MOVETOTHE       reduce using rule 21 (instructions -> instruction instructions .)
+    MOVEINDIR       reduce using rule 21 (instructions -> instruction instructions .)
+    JUMPTOTHE       reduce using rule 21 (instructions -> instruction instructions .)
+    JUMPINDIR       reduce using rule 21 (instructions -> instruction instructions .)
+    ELSE            reduce using rule 21 (instructions -> instruction instructions .)
+
+
+state 52
+
+    (67) instruction -> NAME DPUNTOS . args
+    (79) args -> . arg
+    (80) args -> . arg COMA args
+    (81) arg -> . NAME
+    (82) arg -> . INT
+
+    NAME            shift and go to state 71
+    INT             shift and go to state 74
+
+    args                           shift and go to state 72
+    arg                            shift and go to state 73
+
+state 53
+
+    (68) instruction -> IF DPUNTOS . condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+    (71) condition -> . FACING NAME
+    (72) condition -> . CANPUT args COMA NAME
+    (73) condition -> . CANPICK args COMA NAME
+    (74) condition -> . CANMOVEINDIR args COMA NAME
+    (75) condition -> . CANJUMPINDIR args COMA NAME
+    (76) condition -> . CANMOVETOTHE args COMA NAME
+    (77) condition -> . CANJUMPTOTHE args COMA NAME
+    (78) condition -> . NOT condition
+
+    FACING          shift and go to state 76
+    CANPUT          shift and go to state 77
+    CANPICK         shift and go to state 78
+    CANMOVEINDIR    shift and go to state 79
+    CANJUMPINDIR    shift and go to state 80
+    CANMOVETOTHE    shift and go to state 81
+    CANJUMPTOTHE    shift and go to state 82
+    NOT             shift and go to state 83
+
+    condition                      shift and go to state 75
+
+state 54
+
+    (69) instruction -> WHILE DPUNTOS . condition DO DPUNTOS instructions
+    (71) condition -> . FACING NAME
+    (72) condition -> . CANPUT args COMA NAME
+    (73) condition -> . CANPICK args COMA NAME
+    (74) condition -> . CANMOVEINDIR args COMA NAME
+    (75) condition -> . CANJUMPINDIR args COMA NAME
+    (76) condition -> . CANMOVETOTHE args COMA NAME
+    (77) condition -> . CANJUMPTOTHE args COMA NAME
+    (78) condition -> . NOT condition
+
+    FACING          shift and go to state 76
+    CANPUT          shift and go to state 77
+    CANPICK         shift and go to state 78
+    CANMOVEINDIR    shift and go to state 79
+    CANJUMPINDIR    shift and go to state 80
+    CANMOVETOTHE    shift and go to state 81
+    CANJUMPTOTHE    shift and go to state 82
+    NOT             shift and go to state 83
+
+    condition                      shift and go to state 84
+
+state 55
+
+    (70) instruction -> REPEAT DPUNTOS . args DPUNTOS instructions
+    (79) args -> . arg
+    (80) args -> . arg COMA args
+    (81) arg -> . NAME
+    (82) arg -> . INT
+
+    NAME            shift and go to state 71
+    INT             shift and go to state 74
+
+    args                           shift and go to state 85
+    arg                            shift and go to state 73
+
+state 56
+
+    (37) assignTo -> ASSINGTO PCOMA . NAME COMA INT
+
+    NAME            shift and go to state 86
+
+
+state 57
+
+    (38) goto -> GOTO DPUNTOS . INT COMA INT
+
+    INT             shift and go to state 87
+
+
+state 58
+
+    (39) move -> MOVE DPUNTOS . INT
+
+    INT             shift and go to state 88
+
+
+state 59
+
+    (40) turn -> TURN DPUNTOS . LEFT
+    (41) turn -> TURN DPUNTOS . RIGHT
+    (42) turn -> TURN DPUNTOS . AROUND
+
+    LEFT            shift and go to state 89
+    RIGHT           shift and go to state 90
+    AROUND          shift and go to state 91
+
+
+state 60
+
+    (43) face -> FACE DPUNTOS . NORTH
+    (44) face -> FACE DPUNTOS . SOUTH
+    (45) face -> FACE DPUNTOS . EAST
+    (46) face -> FACE DPUNTOS . WEST
+
+    NORTH           shift and go to state 92
+    SOUTH           shift and go to state 93
+    EAST            shift and go to state 94
+    WEST            shift and go to state 95
+
+
+state 61
+
+    (47) put -> PUT DPUNTOS . INT COMA BALLOONS
+    (48) put -> PUT DPUNTOS . INT COMA CHIPS
+
+    INT             shift and go to state 96
+
+
+state 62
+
+    (49) pick -> PICK DPUNTOS . INT COMA BALLOONS
+    (50) pick -> PICK DPUNTOS . INT COMA CHIPS
+
+    INT             shift and go to state 97
+
+
+state 63
+
+    (51) moveToThe -> MOVETOTHE DPUNTOS . INT COMA FRONT
+    (52) moveToThe -> MOVETOTHE DPUNTOS . INT COMA LEFT
+    (53) moveToThe -> MOVETOTHE DPUNTOS . INT COMA RIGHT
+    (54) moveToThe -> MOVETOTHE DPUNTOS . INT COMA BACK
+
+    INT             shift and go to state 98
+
+
+state 64
+
+    (55) moveInDir -> MOVEINDIR DPUNTOS . INT COMA NORTH
+    (56) moveInDir -> MOVEINDIR DPUNTOS . INT COMA SOUTH
+    (57) moveInDir -> MOVEINDIR DPUNTOS . INT COMA EAST
+    (58) moveInDir -> MOVEINDIR DPUNTOS . INT COMA WEST
+
+    INT             shift and go to state 99
+
+
+state 65
+
+    (59) jumpToThe -> JUMPTOTHE DPUNTOS . INT COMA FRONT
+    (60) jumpToThe -> JUMPTOTHE DPUNTOS . INT COMA LEFT
+    (61) jumpToThe -> JUMPTOTHE DPUNTOS . INT COMA RIGHT
+    (62) jumpToThe -> JUMPTOTHE DPUNTOS . INT COMA BACK
+
+    INT             shift and go to state 100
+
+
+state 66
+
+    (63) jumpInDir -> JUMPINDIR DPUNTOS . INT COMA NORTH
+    (64) jumpInDir -> JUMPINDIR DPUNTOS . INT COMA SOUTH
+    (65) jumpInDir -> JUMPINDIR DPUNTOS . INT COMA EAST
+    (66) jumpInDir -> JUMPINDIR DPUNTOS . INT COMA WEST
+
+    INT             shift and go to state 101
+
+
+state 67
+
+    (1) program -> ROBOT_R VARS var_list PROCS proc_def . instruction_block
+    (19) instruction_block -> . CORCHI instructions CORCHD
+    (20) instruction_block -> . CORCHI CORCHD
+
+    CORCHI          shift and go to state 7
+
+    instruction_block              shift and go to state 102
+
+state 68
+
+    (11) var_list_tail -> COMA NAME . var_list_tail PCOMA
+    (12) var_list_tail -> COMA NAME . PCOMA
+    (11) var_list_tail -> . COMA NAME var_list_tail PCOMA
+    (12) var_list_tail -> . COMA NAME PCOMA
+
+    PCOMA           shift and go to state 104
+    COMA            shift and go to state 47
+
+    var_list_tail                  shift and go to state 103
+
+state 69
+
+    (13) proc_def -> NAME CORCHI parameters . CORCHD instruction_block
+    (14) proc_def -> NAME CORCHI parameters . CORCHD instruction_block proc_def
+
+    CORCHD          shift and go to state 105
+
+
+state 70
+
+    (15) parameters -> LINEA . NAME parameters_tail LINEA
+    (16) parameters -> LINEA . NAME LINEA
+
+    NAME            shift and go to state 106
+
+
+state 71
+
+    (81) arg -> NAME .
+
+    COMA            reduce using rule 81 (arg -> NAME .)
+    NOP             reduce using rule 81 (arg -> NAME .)
+    procedure_call  reduce using rule 81 (arg -> NAME .)
+    control_structure reduce using rule 81 (arg -> NAME .)
+    NAME            reduce using rule 81 (arg -> NAME .)
+    IF              reduce using rule 81 (arg -> NAME .)
+    WHILE           reduce using rule 81 (arg -> NAME .)
+    REPEAT          reduce using rule 81 (arg -> NAME .)
+    ASSINGTO        reduce using rule 81 (arg -> NAME .)
+    GOTO            reduce using rule 81 (arg -> NAME .)
+    MOVE            reduce using rule 81 (arg -> NAME .)
+    TURN            reduce using rule 81 (arg -> NAME .)
+    FACE            reduce using rule 81 (arg -> NAME .)
+    PUT             reduce using rule 81 (arg -> NAME .)
+    PICK            reduce using rule 81 (arg -> NAME .)
+    MOVETOTHE       reduce using rule 81 (arg -> NAME .)
+    MOVEINDIR       reduce using rule 81 (arg -> NAME .)
+    JUMPTOTHE       reduce using rule 81 (arg -> NAME .)
+    JUMPINDIR       reduce using rule 81 (arg -> NAME .)
+    CORCHD          reduce using rule 81 (arg -> NAME .)
+    ELSE            reduce using rule 81 (arg -> NAME .)
+    DPUNTOS         reduce using rule 81 (arg -> NAME .)
+
+
+state 72
+
+    (67) instruction -> NAME DPUNTOS args .
+
+    NOP             reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    procedure_call  reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    control_structure reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    NAME            reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    IF              reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    WHILE           reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    REPEAT          reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    ASSINGTO        reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    GOTO            reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    MOVE            reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    TURN            reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    FACE            reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    PUT             reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    PICK            reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    MOVETOTHE       reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    MOVEINDIR       reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    JUMPTOTHE       reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    JUMPINDIR       reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    CORCHD          reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+    ELSE            reduce using rule 67 (instruction -> NAME DPUNTOS args .)
+
+
+state 73
+
+    (79) args -> arg .
+    (80) args -> arg . COMA args
+
+  ! shift/reduce conflict for COMA resolved as shift
+    NOP             reduce using rule 79 (args -> arg .)
+    procedure_call  reduce using rule 79 (args -> arg .)
+    control_structure reduce using rule 79 (args -> arg .)
+    NAME            reduce using rule 79 (args -> arg .)
+    IF              reduce using rule 79 (args -> arg .)
+    WHILE           reduce using rule 79 (args -> arg .)
+    REPEAT          reduce using rule 79 (args -> arg .)
+    ASSINGTO        reduce using rule 79 (args -> arg .)
+    GOTO            reduce using rule 79 (args -> arg .)
+    MOVE            reduce using rule 79 (args -> arg .)
+    TURN            reduce using rule 79 (args -> arg .)
+    FACE            reduce using rule 79 (args -> arg .)
+    PUT             reduce using rule 79 (args -> arg .)
+    PICK            reduce using rule 79 (args -> arg .)
+    MOVETOTHE       reduce using rule 79 (args -> arg .)
+    MOVEINDIR       reduce using rule 79 (args -> arg .)
+    JUMPTOTHE       reduce using rule 79 (args -> arg .)
+    JUMPINDIR       reduce using rule 79 (args -> arg .)
+    CORCHD          reduce using rule 79 (args -> arg .)
+    ELSE            reduce using rule 79 (args -> arg .)
+    DPUNTOS         reduce using rule 79 (args -> arg .)
+    COMA            shift and go to state 107
+
+  ! COMA            [ reduce using rule 79 (args -> arg .) ]
+
+
+state 74
+
+    (82) arg -> INT .
+
+    COMA            reduce using rule 82 (arg -> INT .)
+    NOP             reduce using rule 82 (arg -> INT .)
+    procedure_call  reduce using rule 82 (arg -> INT .)
+    control_structure reduce using rule 82 (arg -> INT .)
+    NAME            reduce using rule 82 (arg -> INT .)
+    IF              reduce using rule 82 (arg -> INT .)
+    WHILE           reduce using rule 82 (arg -> INT .)
+    REPEAT          reduce using rule 82 (arg -> INT .)
+    ASSINGTO        reduce using rule 82 (arg -> INT .)
+    GOTO            reduce using rule 82 (arg -> INT .)
+    MOVE            reduce using rule 82 (arg -> INT .)
+    TURN            reduce using rule 82 (arg -> INT .)
+    FACE            reduce using rule 82 (arg -> INT .)
+    PUT             reduce using rule 82 (arg -> INT .)
+    PICK            reduce using rule 82 (arg -> INT .)
+    MOVETOTHE       reduce using rule 82 (arg -> INT .)
+    MOVEINDIR       reduce using rule 82 (arg -> INT .)
+    JUMPTOTHE       reduce using rule 82 (arg -> INT .)
+    JUMPINDIR       reduce using rule 82 (arg -> INT .)
+    CORCHD          reduce using rule 82 (arg -> INT .)
+    ELSE            reduce using rule 82 (arg -> INT .)
+    DPUNTOS         reduce using rule 82 (arg -> INT .)
+
+
+state 75
+
+    (68) instruction -> IF DPUNTOS condition . THEN DPUNTOS instructions ELSE DPUNTOS instructions
+
+    THEN            shift and go to state 108
+
+
+state 76
+
+    (71) condition -> FACING . NAME
+
+    NAME            shift and go to state 109
+
+
+state 77
+
+    (72) condition -> CANPUT . args COMA NAME
+    (79) args -> . arg
+    (80) args -> . arg COMA args
+    (81) arg -> . NAME
+    (82) arg -> . INT
+
+    NAME            shift and go to state 71
+    INT             shift and go to state 74
+
+    args                           shift and go to state 110
+    arg                            shift and go to state 73
+
+state 78
+
+    (73) condition -> CANPICK . args COMA NAME
+    (79) args -> . arg
+    (80) args -> . arg COMA args
+    (81) arg -> . NAME
+    (82) arg -> . INT
+
+    NAME            shift and go to state 71
+    INT             shift and go to state 74
+
+    args                           shift and go to state 111
+    arg                            shift and go to state 73
+
+state 79
+
+    (74) condition -> CANMOVEINDIR . args COMA NAME
+    (79) args -> . arg
+    (80) args -> . arg COMA args
+    (81) arg -> . NAME
+    (82) arg -> . INT
+
+    NAME            shift and go to state 71
+    INT             shift and go to state 74
+
+    args                           shift and go to state 112
+    arg                            shift and go to state 73
+
+state 80
+
+    (75) condition -> CANJUMPINDIR . args COMA NAME
+    (79) args -> . arg
+    (80) args -> . arg COMA args
+    (81) arg -> . NAME
+    (82) arg -> . INT
+
+    NAME            shift and go to state 71
+    INT             shift and go to state 74
+
+    args                           shift and go to state 113
+    arg                            shift and go to state 73
+
+state 81
+
+    (76) condition -> CANMOVETOTHE . args COMA NAME
+    (79) args -> . arg
+    (80) args -> . arg COMA args
+    (81) arg -> . NAME
+    (82) arg -> . INT
+
+    NAME            shift and go to state 71
+    INT             shift and go to state 74
+
+    args                           shift and go to state 114
+    arg                            shift and go to state 73
+
+state 82
+
+    (77) condition -> CANJUMPTOTHE . args COMA NAME
+    (79) args -> . arg
+    (80) args -> . arg COMA args
+    (81) arg -> . NAME
+    (82) arg -> . INT
+
+    NAME            shift and go to state 71
+    INT             shift and go to state 74
+
+    args                           shift and go to state 115
+    arg                            shift and go to state 73
+
+state 83
+
+    (78) condition -> NOT . condition
+    (71) condition -> . FACING NAME
+    (72) condition -> . CANPUT args COMA NAME
+    (73) condition -> . CANPICK args COMA NAME
+    (74) condition -> . CANMOVEINDIR args COMA NAME
+    (75) condition -> . CANJUMPINDIR args COMA NAME
+    (76) condition -> . CANMOVETOTHE args COMA NAME
+    (77) condition -> . CANJUMPTOTHE args COMA NAME
+    (78) condition -> . NOT condition
+
+    FACING          shift and go to state 76
+    CANPUT          shift and go to state 77
+    CANPICK         shift and go to state 78
+    CANMOVEINDIR    shift and go to state 79
+    CANJUMPINDIR    shift and go to state 80
+    CANMOVETOTHE    shift and go to state 81
+    CANJUMPTOTHE    shift and go to state 82
+    NOT             shift and go to state 83
+
+    condition                      shift and go to state 116
+
+state 84
+
+    (69) instruction -> WHILE DPUNTOS condition . DO DPUNTOS instructions
+
+    DO              shift and go to state 117
+
+
+state 85
+
+    (70) instruction -> REPEAT DPUNTOS args . DPUNTOS instructions
+
+    DPUNTOS         shift and go to state 118
+
+
+state 86
+
+    (37) assignTo -> ASSINGTO PCOMA NAME . COMA INT
+
+    COMA            shift and go to state 119
+
+
+state 87
+
+    (38) goto -> GOTO DPUNTOS INT . COMA INT
+
+    COMA            shift and go to state 120
+
+
+state 88
+
+    (39) move -> MOVE DPUNTOS INT .
+
+    NOP             reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    procedure_call  reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    control_structure reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    NAME            reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    IF              reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    WHILE           reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    REPEAT          reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    ASSINGTO        reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    GOTO            reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    MOVE            reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    TURN            reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    FACE            reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    PUT             reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    PICK            reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    MOVETOTHE       reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    MOVEINDIR       reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    JUMPTOTHE       reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    JUMPINDIR       reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    CORCHD          reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+    ELSE            reduce using rule 39 (move -> MOVE DPUNTOS INT .)
+
+
+state 89
+
+    (40) turn -> TURN DPUNTOS LEFT .
+
+    NOP             reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    procedure_call  reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    control_structure reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    NAME            reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    IF              reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    WHILE           reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    REPEAT          reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    ASSINGTO        reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    GOTO            reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    MOVE            reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    TURN            reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    FACE            reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    PUT             reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    PICK            reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    MOVETOTHE       reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    MOVEINDIR       reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    JUMPTOTHE       reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    JUMPINDIR       reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    CORCHD          reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+    ELSE            reduce using rule 40 (turn -> TURN DPUNTOS LEFT .)
+
+
+state 90
+
+    (41) turn -> TURN DPUNTOS RIGHT .
+
+    NOP             reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    procedure_call  reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    control_structure reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    NAME            reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    IF              reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    WHILE           reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    REPEAT          reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    ASSINGTO        reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    GOTO            reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    MOVE            reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    TURN            reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    FACE            reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    PUT             reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    PICK            reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    MOVETOTHE       reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    MOVEINDIR       reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    JUMPTOTHE       reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    JUMPINDIR       reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    CORCHD          reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+    ELSE            reduce using rule 41 (turn -> TURN DPUNTOS RIGHT .)
+
+
+state 91
+
+    (42) turn -> TURN DPUNTOS AROUND .
+
+    NOP             reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    procedure_call  reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    control_structure reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    NAME            reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    IF              reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    WHILE           reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    REPEAT          reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    ASSINGTO        reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    GOTO            reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    MOVE            reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    TURN            reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    FACE            reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    PUT             reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    PICK            reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    MOVETOTHE       reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    MOVEINDIR       reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    JUMPTOTHE       reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    JUMPINDIR       reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    CORCHD          reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+    ELSE            reduce using rule 42 (turn -> TURN DPUNTOS AROUND .)
+
+
+state 92
+
+    (43) face -> FACE DPUNTOS NORTH .
+
+    NOP             reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    procedure_call  reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    control_structure reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    NAME            reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    IF              reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    WHILE           reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    REPEAT          reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    ASSINGTO        reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    GOTO            reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    MOVE            reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    TURN            reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    FACE            reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    PUT             reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    PICK            reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    MOVETOTHE       reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    MOVEINDIR       reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    JUMPTOTHE       reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    JUMPINDIR       reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    CORCHD          reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+    ELSE            reduce using rule 43 (face -> FACE DPUNTOS NORTH .)
+
+
+state 93
+
+    (44) face -> FACE DPUNTOS SOUTH .
+
+    NOP             reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    procedure_call  reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    control_structure reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    NAME            reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    IF              reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    WHILE           reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    REPEAT          reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    ASSINGTO        reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    GOTO            reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    MOVE            reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    TURN            reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    FACE            reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    PUT             reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    PICK            reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    MOVETOTHE       reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    MOVEINDIR       reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    JUMPTOTHE       reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    JUMPINDIR       reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    CORCHD          reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+    ELSE            reduce using rule 44 (face -> FACE DPUNTOS SOUTH .)
+
+
+state 94
+
+    (45) face -> FACE DPUNTOS EAST .
+
+    NOP             reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    procedure_call  reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    control_structure reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    NAME            reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    IF              reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    WHILE           reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    REPEAT          reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    ASSINGTO        reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    GOTO            reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    MOVE            reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    TURN            reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    FACE            reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    PUT             reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    PICK            reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    MOVETOTHE       reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    MOVEINDIR       reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    JUMPTOTHE       reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    JUMPINDIR       reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    CORCHD          reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+    ELSE            reduce using rule 45 (face -> FACE DPUNTOS EAST .)
+
+
+state 95
+
+    (46) face -> FACE DPUNTOS WEST .
+
+    NOP             reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    procedure_call  reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    control_structure reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    NAME            reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    IF              reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    WHILE           reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    REPEAT          reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    ASSINGTO        reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    GOTO            reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    MOVE            reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    TURN            reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    FACE            reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    PUT             reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    PICK            reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    MOVETOTHE       reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    MOVEINDIR       reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    JUMPTOTHE       reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    JUMPINDIR       reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    CORCHD          reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+    ELSE            reduce using rule 46 (face -> FACE DPUNTOS WEST .)
+
+
+state 96
+
+    (47) put -> PUT DPUNTOS INT . COMA BALLOONS
+    (48) put -> PUT DPUNTOS INT . COMA CHIPS
+
+    COMA            shift and go to state 121
+
+
+state 97
+
+    (49) pick -> PICK DPUNTOS INT . COMA BALLOONS
+    (50) pick -> PICK DPUNTOS INT . COMA CHIPS
+
+    COMA            shift and go to state 122
+
+
+state 98
+
+    (51) moveToThe -> MOVETOTHE DPUNTOS INT . COMA FRONT
+    (52) moveToThe -> MOVETOTHE DPUNTOS INT . COMA LEFT
+    (53) moveToThe -> MOVETOTHE DPUNTOS INT . COMA RIGHT
+    (54) moveToThe -> MOVETOTHE DPUNTOS INT . COMA BACK
+
+    COMA            shift and go to state 123
+
+
+state 99
+
+    (55) moveInDir -> MOVEINDIR DPUNTOS INT . COMA NORTH
+    (56) moveInDir -> MOVEINDIR DPUNTOS INT . COMA SOUTH
+    (57) moveInDir -> MOVEINDIR DPUNTOS INT . COMA EAST
+    (58) moveInDir -> MOVEINDIR DPUNTOS INT . COMA WEST
+
+    COMA            shift and go to state 124
+
+
+state 100
+
+    (59) jumpToThe -> JUMPTOTHE DPUNTOS INT . COMA FRONT
+    (60) jumpToThe -> JUMPTOTHE DPUNTOS INT . COMA LEFT
+    (61) jumpToThe -> JUMPTOTHE DPUNTOS INT . COMA RIGHT
+    (62) jumpToThe -> JUMPTOTHE DPUNTOS INT . COMA BACK
+
+    COMA            shift and go to state 125
+
+
+state 101
+
+    (63) jumpInDir -> JUMPINDIR DPUNTOS INT . COMA NORTH
+    (64) jumpInDir -> JUMPINDIR DPUNTOS INT . COMA SOUTH
+    (65) jumpInDir -> JUMPINDIR DPUNTOS INT . COMA EAST
+    (66) jumpInDir -> JUMPINDIR DPUNTOS INT . COMA WEST
+
+    COMA            shift and go to state 126
+
+
+state 102
+
+    (1) program -> ROBOT_R VARS var_list PROCS proc_def instruction_block .
+
+    $end            reduce using rule 1 (program -> ROBOT_R VARS var_list PROCS proc_def instruction_block .)
+
+
+state 103
+
+    (11) var_list_tail -> COMA NAME var_list_tail . PCOMA
+
+    PCOMA           shift and go to state 127
+
+
+state 104
+
+    (12) var_list_tail -> COMA NAME PCOMA .
+
+    PROCS           reduce using rule 12 (var_list_tail -> COMA NAME PCOMA .)
+    PCOMA           reduce using rule 12 (var_list_tail -> COMA NAME PCOMA .)
+
+
+state 105
+
+    (13) proc_def -> NAME CORCHI parameters CORCHD . instruction_block
+    (14) proc_def -> NAME CORCHI parameters CORCHD . instruction_block proc_def
+    (19) instruction_block -> . CORCHI instructions CORCHD
+    (20) instruction_block -> . CORCHI CORCHD
+
+    CORCHI          shift and go to state 7
+
+    instruction_block              shift and go to state 128
+
+state 106
+
+    (15) parameters -> LINEA NAME . parameters_tail LINEA
+    (16) parameters -> LINEA NAME . LINEA
+    (17) parameters_tail -> . COMA NAME parameters_tail
+    (18) parameters_tail -> . COMA NAME
+
+    LINEA           shift and go to state 129
+    COMA            shift and go to state 131
+
+    parameters_tail                shift and go to state 130
+
+state 107
+
+    (80) args -> arg COMA . args
+    (79) args -> . arg
+    (80) args -> . arg COMA args
+    (81) arg -> . NAME
+    (82) arg -> . INT
+
+    NAME            shift and go to state 71
+    INT             shift and go to state 74
+
+    arg                            shift and go to state 73
+    args                           shift and go to state 132
+
+state 108
+
+    (68) instruction -> IF DPUNTOS condition THEN . DPUNTOS instructions ELSE DPUNTOS instructions
+
+    DPUNTOS         shift and go to state 133
+
+
+state 109
+
+    (71) condition -> FACING NAME .
+
+    THEN            reduce using rule 71 (condition -> FACING NAME .)
+    DO              reduce using rule 71 (condition -> FACING NAME .)
+
+
+state 110
+
+    (72) condition -> CANPUT args . COMA NAME
+
+    COMA            shift and go to state 134
+
+
+state 111
+
+    (73) condition -> CANPICK args . COMA NAME
+
+    COMA            shift and go to state 135
+
+
+state 112
+
+    (74) condition -> CANMOVEINDIR args . COMA NAME
+
+    COMA            shift and go to state 136
+
+
+state 113
+
+    (75) condition -> CANJUMPINDIR args . COMA NAME
+
+    COMA            shift and go to state 137
+
+
+state 114
+
+    (76) condition -> CANMOVETOTHE args . COMA NAME
+
+    COMA            shift and go to state 138
+
+
+state 115
+
+    (77) condition -> CANJUMPTOTHE args . COMA NAME
+
+    COMA            shift and go to state 139
+
+
+state 116
+
+    (78) condition -> NOT condition .
+
+    THEN            reduce using rule 78 (condition -> NOT condition .)
+    DO              reduce using rule 78 (condition -> NOT condition .)
+
+
+state 117
+
+    (69) instruction -> WHILE DPUNTOS condition DO . DPUNTOS instructions
+
+    DPUNTOS         shift and go to state 140
+
+
+state 118
+
+    (70) instruction -> REPEAT DPUNTOS args DPUNTOS . instructions
+    (21) instructions -> . instruction instructions
+    (22) instructions -> . instruction
+    (23) instruction -> . assignTo
+    (24) instruction -> . goto
+    (25) instruction -> . move
+    (26) instruction -> . turn
+    (27) instruction -> . face
+    (28) instruction -> . put
+    (29) instruction -> . pick
+    (30) instruction -> . moveToThe
+    (31) instruction -> . moveInDir
+    (32) instruction -> . jumpToThe
+    (33) instruction -> . jumpInDir
+    (34) instruction -> . NOP
+    (35) instruction -> . procedure_call
+    (36) instruction -> . control_structure
+    (67) instruction -> . NAME DPUNTOS args
+    (68) instruction -> . IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+    (69) instruction -> . WHILE DPUNTOS condition DO DPUNTOS instructions
+    (70) instruction -> . REPEAT DPUNTOS args DPUNTOS instructions
+    (37) assignTo -> . ASSINGTO PCOMA NAME COMA INT
+    (38) goto -> . GOTO DPUNTOS INT COMA INT
+    (39) move -> . MOVE DPUNTOS INT
+    (40) turn -> . TURN DPUNTOS LEFT
+    (41) turn -> . TURN DPUNTOS RIGHT
+    (42) turn -> . TURN DPUNTOS AROUND
+    (43) face -> . FACE DPUNTOS NORTH
+    (44) face -> . FACE DPUNTOS SOUTH
+    (45) face -> . FACE DPUNTOS EAST
+    (46) face -> . FACE DPUNTOS WEST
+    (47) put -> . PUT DPUNTOS INT COMA BALLOONS
+    (48) put -> . PUT DPUNTOS INT COMA CHIPS
+    (49) pick -> . PICK DPUNTOS INT COMA BALLOONS
+    (50) pick -> . PICK DPUNTOS INT COMA CHIPS
+    (51) moveToThe -> . MOVETOTHE DPUNTOS INT COMA FRONT
+    (52) moveToThe -> . MOVETOTHE DPUNTOS INT COMA LEFT
+    (53) moveToThe -> . MOVETOTHE DPUNTOS INT COMA RIGHT
+    (54) moveToThe -> . MOVETOTHE DPUNTOS INT COMA BACK
+    (55) moveInDir -> . MOVEINDIR DPUNTOS INT COMA NORTH
+    (56) moveInDir -> . MOVEINDIR DPUNTOS INT COMA SOUTH
+    (57) moveInDir -> . MOVEINDIR DPUNTOS INT COMA EAST
+    (58) moveInDir -> . MOVEINDIR DPUNTOS INT COMA WEST
+    (59) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA FRONT
+    (60) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA LEFT
+    (61) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA RIGHT
+    (62) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA BACK
+    (63) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA NORTH
+    (64) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA SOUTH
+    (65) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA EAST
+    (66) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA WEST
+
+    NOP             shift and go to state 27
+    procedure_call  shift and go to state 28
+    control_structure shift and go to state 29
+    NAME            shift and go to state 30
+    IF              shift and go to state 31
+    WHILE           shift and go to state 32
+    REPEAT          shift and go to state 33
+    ASSINGTO        shift and go to state 34
+    GOTO            shift and go to state 35
+    MOVE            shift and go to state 36
+    TURN            shift and go to state 37
+    FACE            shift and go to state 38
+    PUT             shift and go to state 39
+    PICK            shift and go to state 40
+    MOVETOTHE       shift and go to state 41
+    MOVEINDIR       shift and go to state 42
+    JUMPTOTHE       shift and go to state 43
+    JUMPINDIR       shift and go to state 44
+
+    instructions                   shift and go to state 141
+    instruction                    shift and go to state 15
+    assignTo                       shift and go to state 16
+    goto                           shift and go to state 17
+    move                           shift and go to state 18
+    turn                           shift and go to state 19
+    face                           shift and go to state 20
+    put                            shift and go to state 21
+    pick                           shift and go to state 22
+    moveToThe                      shift and go to state 23
+    moveInDir                      shift and go to state 24
+    jumpToThe                      shift and go to state 25
+    jumpInDir                      shift and go to state 26
+
+state 119
+
+    (37) assignTo -> ASSINGTO PCOMA NAME COMA . INT
+
+    INT             shift and go to state 142
+
+
+state 120
+
+    (38) goto -> GOTO DPUNTOS INT COMA . INT
+
+    INT             shift and go to state 143
+
+
+state 121
+
+    (47) put -> PUT DPUNTOS INT COMA . BALLOONS
+    (48) put -> PUT DPUNTOS INT COMA . CHIPS
+
+    BALLOONS        shift and go to state 144
+    CHIPS           shift and go to state 145
+
+
+state 122
+
+    (49) pick -> PICK DPUNTOS INT COMA . BALLOONS
+    (50) pick -> PICK DPUNTOS INT COMA . CHIPS
+
+    BALLOONS        shift and go to state 146
+    CHIPS           shift and go to state 147
+
+
+state 123
+
+    (51) moveToThe -> MOVETOTHE DPUNTOS INT COMA . FRONT
+    (52) moveToThe -> MOVETOTHE DPUNTOS INT COMA . LEFT
+    (53) moveToThe -> MOVETOTHE DPUNTOS INT COMA . RIGHT
+    (54) moveToThe -> MOVETOTHE DPUNTOS INT COMA . BACK
+
+    FRONT           shift and go to state 148
+    LEFT            shift and go to state 149
+    RIGHT           shift and go to state 150
+    BACK            shift and go to state 151
+
+
+state 124
+
+    (55) moveInDir -> MOVEINDIR DPUNTOS INT COMA . NORTH
+    (56) moveInDir -> MOVEINDIR DPUNTOS INT COMA . SOUTH
+    (57) moveInDir -> MOVEINDIR DPUNTOS INT COMA . EAST
+    (58) moveInDir -> MOVEINDIR DPUNTOS INT COMA . WEST
+
+    NORTH           shift and go to state 152
+    SOUTH           shift and go to state 153
+    EAST            shift and go to state 154
+    WEST            shift and go to state 155
+
+
+state 125
+
+    (59) jumpToThe -> JUMPTOTHE DPUNTOS INT COMA . FRONT
+    (60) jumpToThe -> JUMPTOTHE DPUNTOS INT COMA . LEFT
+    (61) jumpToThe -> JUMPTOTHE DPUNTOS INT COMA . RIGHT
+    (62) jumpToThe -> JUMPTOTHE DPUNTOS INT COMA . BACK
+
+    FRONT           shift and go to state 156
+    LEFT            shift and go to state 157
+    RIGHT           shift and go to state 158
+    BACK            shift and go to state 159
+
+
+state 126
+
+    (63) jumpInDir -> JUMPINDIR DPUNTOS INT COMA . NORTH
+    (64) jumpInDir -> JUMPINDIR DPUNTOS INT COMA . SOUTH
+    (65) jumpInDir -> JUMPINDIR DPUNTOS INT COMA . EAST
+    (66) jumpInDir -> JUMPINDIR DPUNTOS INT COMA . WEST
+
+    NORTH           shift and go to state 160
+    SOUTH           shift and go to state 161
+    EAST            shift and go to state 162
+    WEST            shift and go to state 163
+
+
+state 127
+
+    (11) var_list_tail -> COMA NAME var_list_tail PCOMA .
+
+    PROCS           reduce using rule 11 (var_list_tail -> COMA NAME var_list_tail PCOMA .)
+    PCOMA           reduce using rule 11 (var_list_tail -> COMA NAME var_list_tail PCOMA .)
+
+
+state 128
+
+    (13) proc_def -> NAME CORCHI parameters CORCHD instruction_block .
+    (14) proc_def -> NAME CORCHI parameters CORCHD instruction_block . proc_def
+    (13) proc_def -> . NAME CORCHI parameters CORCHD instruction_block
+    (14) proc_def -> . NAME CORCHI parameters CORCHD instruction_block proc_def
+
+    CORCHI          reduce using rule 13 (proc_def -> NAME CORCHI parameters CORCHD instruction_block .)
+    NAME            shift and go to state 12
+
+    proc_def                       shift and go to state 164
+
+state 129
+
+    (16) parameters -> LINEA NAME LINEA .
+
+    CORCHD          reduce using rule 16 (parameters -> LINEA NAME LINEA .)
+
+
+state 130
+
+    (15) parameters -> LINEA NAME parameters_tail . LINEA
+
+    LINEA           shift and go to state 165
+
+
+state 131
+
+    (17) parameters_tail -> COMA . NAME parameters_tail
+    (18) parameters_tail -> COMA . NAME
+
+    NAME            shift and go to state 166
+
+
+state 132
+
+    (80) args -> arg COMA args .
+
+    NOP             reduce using rule 80 (args -> arg COMA args .)
+    procedure_call  reduce using rule 80 (args -> arg COMA args .)
+    control_structure reduce using rule 80 (args -> arg COMA args .)
+    NAME            reduce using rule 80 (args -> arg COMA args .)
+    IF              reduce using rule 80 (args -> arg COMA args .)
+    WHILE           reduce using rule 80 (args -> arg COMA args .)
+    REPEAT          reduce using rule 80 (args -> arg COMA args .)
+    ASSINGTO        reduce using rule 80 (args -> arg COMA args .)
+    GOTO            reduce using rule 80 (args -> arg COMA args .)
+    MOVE            reduce using rule 80 (args -> arg COMA args .)
+    TURN            reduce using rule 80 (args -> arg COMA args .)
+    FACE            reduce using rule 80 (args -> arg COMA args .)
+    PUT             reduce using rule 80 (args -> arg COMA args .)
+    PICK            reduce using rule 80 (args -> arg COMA args .)
+    MOVETOTHE       reduce using rule 80 (args -> arg COMA args .)
+    MOVEINDIR       reduce using rule 80 (args -> arg COMA args .)
+    JUMPTOTHE       reduce using rule 80 (args -> arg COMA args .)
+    JUMPINDIR       reduce using rule 80 (args -> arg COMA args .)
+    CORCHD          reduce using rule 80 (args -> arg COMA args .)
+    ELSE            reduce using rule 80 (args -> arg COMA args .)
+    DPUNTOS         reduce using rule 80 (args -> arg COMA args .)
+    COMA            reduce using rule 80 (args -> arg COMA args .)
+
+
+state 133
+
+    (68) instruction -> IF DPUNTOS condition THEN DPUNTOS . instructions ELSE DPUNTOS instructions
+    (21) instructions -> . instruction instructions
+    (22) instructions -> . instruction
+    (23) instruction -> . assignTo
+    (24) instruction -> . goto
+    (25) instruction -> . move
+    (26) instruction -> . turn
+    (27) instruction -> . face
+    (28) instruction -> . put
+    (29) instruction -> . pick
+    (30) instruction -> . moveToThe
+    (31) instruction -> . moveInDir
+    (32) instruction -> . jumpToThe
+    (33) instruction -> . jumpInDir
+    (34) instruction -> . NOP
+    (35) instruction -> . procedure_call
+    (36) instruction -> . control_structure
+    (67) instruction -> . NAME DPUNTOS args
+    (68) instruction -> . IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+    (69) instruction -> . WHILE DPUNTOS condition DO DPUNTOS instructions
+    (70) instruction -> . REPEAT DPUNTOS args DPUNTOS instructions
+    (37) assignTo -> . ASSINGTO PCOMA NAME COMA INT
+    (38) goto -> . GOTO DPUNTOS INT COMA INT
+    (39) move -> . MOVE DPUNTOS INT
+    (40) turn -> . TURN DPUNTOS LEFT
+    (41) turn -> . TURN DPUNTOS RIGHT
+    (42) turn -> . TURN DPUNTOS AROUND
+    (43) face -> . FACE DPUNTOS NORTH
+    (44) face -> . FACE DPUNTOS SOUTH
+    (45) face -> . FACE DPUNTOS EAST
+    (46) face -> . FACE DPUNTOS WEST
+    (47) put -> . PUT DPUNTOS INT COMA BALLOONS
+    (48) put -> . PUT DPUNTOS INT COMA CHIPS
+    (49) pick -> . PICK DPUNTOS INT COMA BALLOONS
+    (50) pick -> . PICK DPUNTOS INT COMA CHIPS
+    (51) moveToThe -> . MOVETOTHE DPUNTOS INT COMA FRONT
+    (52) moveToThe -> . MOVETOTHE DPUNTOS INT COMA LEFT
+    (53) moveToThe -> . MOVETOTHE DPUNTOS INT COMA RIGHT
+    (54) moveToThe -> . MOVETOTHE DPUNTOS INT COMA BACK
+    (55) moveInDir -> . MOVEINDIR DPUNTOS INT COMA NORTH
+    (56) moveInDir -> . MOVEINDIR DPUNTOS INT COMA SOUTH
+    (57) moveInDir -> . MOVEINDIR DPUNTOS INT COMA EAST
+    (58) moveInDir -> . MOVEINDIR DPUNTOS INT COMA WEST
+    (59) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA FRONT
+    (60) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA LEFT
+    (61) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA RIGHT
+    (62) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA BACK
+    (63) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA NORTH
+    (64) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA SOUTH
+    (65) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA EAST
+    (66) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA WEST
+
+    NOP             shift and go to state 27
+    procedure_call  shift and go to state 28
+    control_structure shift and go to state 29
+    NAME            shift and go to state 30
+    IF              shift and go to state 31
+    WHILE           shift and go to state 32
+    REPEAT          shift and go to state 33
+    ASSINGTO        shift and go to state 34
+    GOTO            shift and go to state 35
+    MOVE            shift and go to state 36
+    TURN            shift and go to state 37
+    FACE            shift and go to state 38
+    PUT             shift and go to state 39
+    PICK            shift and go to state 40
+    MOVETOTHE       shift and go to state 41
+    MOVEINDIR       shift and go to state 42
+    JUMPTOTHE       shift and go to state 43
+    JUMPINDIR       shift and go to state 44
+
+    instructions                   shift and go to state 167
+    instruction                    shift and go to state 15
+    assignTo                       shift and go to state 16
+    goto                           shift and go to state 17
+    move                           shift and go to state 18
+    turn                           shift and go to state 19
+    face                           shift and go to state 20
+    put                            shift and go to state 21
+    pick                           shift and go to state 22
+    moveToThe                      shift and go to state 23
+    moveInDir                      shift and go to state 24
+    jumpToThe                      shift and go to state 25
+    jumpInDir                      shift and go to state 26
+
+state 134
+
+    (72) condition -> CANPUT args COMA . NAME
+
+    NAME            shift and go to state 168
+
+
+state 135
+
+    (73) condition -> CANPICK args COMA . NAME
+
+    NAME            shift and go to state 169
+
+
+state 136
+
+    (74) condition -> CANMOVEINDIR args COMA . NAME
+
+    NAME            shift and go to state 170
+
+
+state 137
+
+    (75) condition -> CANJUMPINDIR args COMA . NAME
+
+    NAME            shift and go to state 171
+
+
+state 138
+
+    (76) condition -> CANMOVETOTHE args COMA . NAME
+
+    NAME            shift and go to state 172
+
+
+state 139
+
+    (77) condition -> CANJUMPTOTHE args COMA . NAME
+
+    NAME            shift and go to state 173
+
+
+state 140
+
+    (69) instruction -> WHILE DPUNTOS condition DO DPUNTOS . instructions
+    (21) instructions -> . instruction instructions
+    (22) instructions -> . instruction
+    (23) instruction -> . assignTo
+    (24) instruction -> . goto
+    (25) instruction -> . move
+    (26) instruction -> . turn
+    (27) instruction -> . face
+    (28) instruction -> . put
+    (29) instruction -> . pick
+    (30) instruction -> . moveToThe
+    (31) instruction -> . moveInDir
+    (32) instruction -> . jumpToThe
+    (33) instruction -> . jumpInDir
+    (34) instruction -> . NOP
+    (35) instruction -> . procedure_call
+    (36) instruction -> . control_structure
+    (67) instruction -> . NAME DPUNTOS args
+    (68) instruction -> . IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+    (69) instruction -> . WHILE DPUNTOS condition DO DPUNTOS instructions
+    (70) instruction -> . REPEAT DPUNTOS args DPUNTOS instructions
+    (37) assignTo -> . ASSINGTO PCOMA NAME COMA INT
+    (38) goto -> . GOTO DPUNTOS INT COMA INT
+    (39) move -> . MOVE DPUNTOS INT
+    (40) turn -> . TURN DPUNTOS LEFT
+    (41) turn -> . TURN DPUNTOS RIGHT
+    (42) turn -> . TURN DPUNTOS AROUND
+    (43) face -> . FACE DPUNTOS NORTH
+    (44) face -> . FACE DPUNTOS SOUTH
+    (45) face -> . FACE DPUNTOS EAST
+    (46) face -> . FACE DPUNTOS WEST
+    (47) put -> . PUT DPUNTOS INT COMA BALLOONS
+    (48) put -> . PUT DPUNTOS INT COMA CHIPS
+    (49) pick -> . PICK DPUNTOS INT COMA BALLOONS
+    (50) pick -> . PICK DPUNTOS INT COMA CHIPS
+    (51) moveToThe -> . MOVETOTHE DPUNTOS INT COMA FRONT
+    (52) moveToThe -> . MOVETOTHE DPUNTOS INT COMA LEFT
+    (53) moveToThe -> . MOVETOTHE DPUNTOS INT COMA RIGHT
+    (54) moveToThe -> . MOVETOTHE DPUNTOS INT COMA BACK
+    (55) moveInDir -> . MOVEINDIR DPUNTOS INT COMA NORTH
+    (56) moveInDir -> . MOVEINDIR DPUNTOS INT COMA SOUTH
+    (57) moveInDir -> . MOVEINDIR DPUNTOS INT COMA EAST
+    (58) moveInDir -> . MOVEINDIR DPUNTOS INT COMA WEST
+    (59) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA FRONT
+    (60) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA LEFT
+    (61) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA RIGHT
+    (62) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA BACK
+    (63) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA NORTH
+    (64) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA SOUTH
+    (65) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA EAST
+    (66) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA WEST
+
+    NOP             shift and go to state 27
+    procedure_call  shift and go to state 28
+    control_structure shift and go to state 29
+    NAME            shift and go to state 30
+    IF              shift and go to state 31
+    WHILE           shift and go to state 32
+    REPEAT          shift and go to state 33
+    ASSINGTO        shift and go to state 34
+    GOTO            shift and go to state 35
+    MOVE            shift and go to state 36
+    TURN            shift and go to state 37
+    FACE            shift and go to state 38
+    PUT             shift and go to state 39
+    PICK            shift and go to state 40
+    MOVETOTHE       shift and go to state 41
+    MOVEINDIR       shift and go to state 42
+    JUMPTOTHE       shift and go to state 43
+    JUMPINDIR       shift and go to state 44
+
+    instructions                   shift and go to state 174
+    instruction                    shift and go to state 15
+    assignTo                       shift and go to state 16
+    goto                           shift and go to state 17
+    move                           shift and go to state 18
+    turn                           shift and go to state 19
+    face                           shift and go to state 20
+    put                            shift and go to state 21
+    pick                           shift and go to state 22
+    moveToThe                      shift and go to state 23
+    moveInDir                      shift and go to state 24
+    jumpToThe                      shift and go to state 25
+    jumpInDir                      shift and go to state 26
+
+state 141
+
+    (70) instruction -> REPEAT DPUNTOS args DPUNTOS instructions .
+
+    NOP             reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    procedure_call  reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    control_structure reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    NAME            reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    IF              reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    WHILE           reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    REPEAT          reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    ASSINGTO        reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    GOTO            reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    MOVE            reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    TURN            reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    FACE            reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    PUT             reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    PICK            reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    MOVETOTHE       reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    MOVEINDIR       reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    JUMPTOTHE       reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    JUMPINDIR       reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    CORCHD          reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+    ELSE            reduce using rule 70 (instruction -> REPEAT DPUNTOS args DPUNTOS instructions .)
+
+
+state 142
+
+    (37) assignTo -> ASSINGTO PCOMA NAME COMA INT .
+
+    NOP             reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    procedure_call  reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    control_structure reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    NAME            reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    IF              reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    WHILE           reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    REPEAT          reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    ASSINGTO        reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    GOTO            reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    MOVE            reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    TURN            reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    FACE            reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    PUT             reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    PICK            reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    MOVETOTHE       reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    MOVEINDIR       reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    JUMPTOTHE       reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    JUMPINDIR       reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    CORCHD          reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+    ELSE            reduce using rule 37 (assignTo -> ASSINGTO PCOMA NAME COMA INT .)
+
+
+state 143
+
+    (38) goto -> GOTO DPUNTOS INT COMA INT .
+
+    NOP             reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    procedure_call  reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    control_structure reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    NAME            reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    IF              reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    WHILE           reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    REPEAT          reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    ASSINGTO        reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    GOTO            reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    MOVE            reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    TURN            reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    FACE            reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    PUT             reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    PICK            reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    MOVETOTHE       reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    MOVEINDIR       reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    JUMPTOTHE       reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    JUMPINDIR       reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    CORCHD          reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+    ELSE            reduce using rule 38 (goto -> GOTO DPUNTOS INT COMA INT .)
+
+
+state 144
+
+    (47) put -> PUT DPUNTOS INT COMA BALLOONS .
+
+    NOP             reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    procedure_call  reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    control_structure reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    NAME            reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    IF              reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    WHILE           reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    REPEAT          reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    ASSINGTO        reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    GOTO            reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    MOVE            reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    TURN            reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    FACE            reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    PUT             reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    PICK            reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    MOVETOTHE       reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    MOVEINDIR       reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    JUMPTOTHE       reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    JUMPINDIR       reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    CORCHD          reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+    ELSE            reduce using rule 47 (put -> PUT DPUNTOS INT COMA BALLOONS .)
+
+
+state 145
+
+    (48) put -> PUT DPUNTOS INT COMA CHIPS .
+
+    NOP             reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    procedure_call  reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    control_structure reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    NAME            reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    IF              reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    WHILE           reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    REPEAT          reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    ASSINGTO        reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    GOTO            reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    MOVE            reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    TURN            reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    FACE            reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    PUT             reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    PICK            reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    MOVETOTHE       reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    MOVEINDIR       reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    JUMPTOTHE       reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    JUMPINDIR       reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    CORCHD          reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+    ELSE            reduce using rule 48 (put -> PUT DPUNTOS INT COMA CHIPS .)
+
+
+state 146
+
+    (49) pick -> PICK DPUNTOS INT COMA BALLOONS .
+
+    NOP             reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    procedure_call  reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    control_structure reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    NAME            reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    IF              reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    WHILE           reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    REPEAT          reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    ASSINGTO        reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    GOTO            reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    MOVE            reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    TURN            reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    FACE            reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    PUT             reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    PICK            reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    MOVETOTHE       reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    MOVEINDIR       reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    JUMPTOTHE       reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    JUMPINDIR       reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    CORCHD          reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+    ELSE            reduce using rule 49 (pick -> PICK DPUNTOS INT COMA BALLOONS .)
+
+
+state 147
+
+    (50) pick -> PICK DPUNTOS INT COMA CHIPS .
+
+    NOP             reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    procedure_call  reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    control_structure reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    NAME            reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    IF              reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    WHILE           reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    REPEAT          reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    ASSINGTO        reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    GOTO            reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    MOVE            reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    TURN            reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    FACE            reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    PUT             reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    PICK            reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    MOVETOTHE       reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    MOVEINDIR       reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    JUMPTOTHE       reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    JUMPINDIR       reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    CORCHD          reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+    ELSE            reduce using rule 50 (pick -> PICK DPUNTOS INT COMA CHIPS .)
+
+
+state 148
+
+    (51) moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .
+
+    NOP             reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    procedure_call  reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    control_structure reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    NAME            reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    IF              reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    WHILE           reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    REPEAT          reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    ASSINGTO        reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    GOTO            reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    MOVE            reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    TURN            reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    FACE            reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    PUT             reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    PICK            reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    MOVETOTHE       reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    MOVEINDIR       reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    JUMPTOTHE       reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    JUMPINDIR       reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    CORCHD          reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+    ELSE            reduce using rule 51 (moveToThe -> MOVETOTHE DPUNTOS INT COMA FRONT .)
+
+
+state 149
+
+    (52) moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .
+
+    NOP             reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    procedure_call  reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    control_structure reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    NAME            reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    IF              reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    WHILE           reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    REPEAT          reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    ASSINGTO        reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    GOTO            reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    MOVE            reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    TURN            reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    FACE            reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    PUT             reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    PICK            reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    MOVETOTHE       reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    MOVEINDIR       reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    JUMPTOTHE       reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    JUMPINDIR       reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    CORCHD          reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+    ELSE            reduce using rule 52 (moveToThe -> MOVETOTHE DPUNTOS INT COMA LEFT .)
+
+
+state 150
+
+    (53) moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .
+
+    NOP             reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    procedure_call  reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    control_structure reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    NAME            reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    IF              reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    WHILE           reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    REPEAT          reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    ASSINGTO        reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    GOTO            reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    MOVE            reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    TURN            reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    FACE            reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    PUT             reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    PICK            reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    MOVETOTHE       reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    MOVEINDIR       reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    JUMPTOTHE       reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    JUMPINDIR       reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    CORCHD          reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+    ELSE            reduce using rule 53 (moveToThe -> MOVETOTHE DPUNTOS INT COMA RIGHT .)
+
+
+state 151
+
+    (54) moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .
+
+    NOP             reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    procedure_call  reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    control_structure reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    NAME            reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    IF              reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    WHILE           reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    REPEAT          reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    ASSINGTO        reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    GOTO            reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    MOVE            reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    TURN            reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    FACE            reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    PUT             reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    PICK            reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    MOVETOTHE       reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    MOVEINDIR       reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    JUMPTOTHE       reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    JUMPINDIR       reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    CORCHD          reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+    ELSE            reduce using rule 54 (moveToThe -> MOVETOTHE DPUNTOS INT COMA BACK .)
+
+
+state 152
+
+    (55) moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .
+
+    NOP             reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    procedure_call  reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    control_structure reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    NAME            reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    IF              reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    WHILE           reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    REPEAT          reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    ASSINGTO        reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    GOTO            reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    MOVE            reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    TURN            reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    FACE            reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    PUT             reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    PICK            reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    MOVETOTHE       reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    MOVEINDIR       reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    JUMPTOTHE       reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    JUMPINDIR       reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    CORCHD          reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+    ELSE            reduce using rule 55 (moveInDir -> MOVEINDIR DPUNTOS INT COMA NORTH .)
+
+
+state 153
+
+    (56) moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .
+
+    NOP             reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    procedure_call  reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    control_structure reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    NAME            reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    IF              reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    WHILE           reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    REPEAT          reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    ASSINGTO        reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    GOTO            reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    MOVE            reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    TURN            reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    FACE            reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    PUT             reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    PICK            reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    MOVETOTHE       reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    MOVEINDIR       reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    JUMPTOTHE       reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    JUMPINDIR       reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    CORCHD          reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+    ELSE            reduce using rule 56 (moveInDir -> MOVEINDIR DPUNTOS INT COMA SOUTH .)
+
+
+state 154
+
+    (57) moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .
+
+    NOP             reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    procedure_call  reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    control_structure reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    NAME            reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    IF              reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    WHILE           reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    REPEAT          reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    ASSINGTO        reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    GOTO            reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    MOVE            reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    TURN            reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    FACE            reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    PUT             reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    PICK            reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    MOVETOTHE       reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    MOVEINDIR       reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    JUMPTOTHE       reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    JUMPINDIR       reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    CORCHD          reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+    ELSE            reduce using rule 57 (moveInDir -> MOVEINDIR DPUNTOS INT COMA EAST .)
+
+
+state 155
+
+    (58) moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .
+
+    NOP             reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    procedure_call  reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    control_structure reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    NAME            reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    IF              reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    WHILE           reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    REPEAT          reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    ASSINGTO        reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    GOTO            reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    MOVE            reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    TURN            reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    FACE            reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    PUT             reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    PICK            reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    MOVETOTHE       reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    MOVEINDIR       reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    JUMPTOTHE       reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    JUMPINDIR       reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    CORCHD          reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+    ELSE            reduce using rule 58 (moveInDir -> MOVEINDIR DPUNTOS INT COMA WEST .)
+
+
+state 156
+
+    (59) jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .
+
+    NOP             reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    procedure_call  reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    control_structure reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    NAME            reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    IF              reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    WHILE           reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    REPEAT          reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    ASSINGTO        reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    GOTO            reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    MOVE            reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    TURN            reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    FACE            reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    PUT             reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    PICK            reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    MOVETOTHE       reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    MOVEINDIR       reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    JUMPTOTHE       reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    JUMPINDIR       reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    CORCHD          reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+    ELSE            reduce using rule 59 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA FRONT .)
+
+
+state 157
+
+    (60) jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .
+
+    NOP             reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    procedure_call  reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    control_structure reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    NAME            reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    IF              reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    WHILE           reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    REPEAT          reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    ASSINGTO        reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    GOTO            reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    MOVE            reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    TURN            reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    FACE            reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    PUT             reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    PICK            reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    MOVETOTHE       reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    MOVEINDIR       reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    JUMPTOTHE       reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    JUMPINDIR       reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    CORCHD          reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+    ELSE            reduce using rule 60 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA LEFT .)
+
+
+state 158
+
+    (61) jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .
+
+    NOP             reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    procedure_call  reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    control_structure reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    NAME            reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    IF              reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    WHILE           reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    REPEAT          reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    ASSINGTO        reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    GOTO            reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    MOVE            reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    TURN            reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    FACE            reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    PUT             reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    PICK            reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    MOVETOTHE       reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    MOVEINDIR       reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    JUMPTOTHE       reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    JUMPINDIR       reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    CORCHD          reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+    ELSE            reduce using rule 61 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA RIGHT .)
+
+
+state 159
+
+    (62) jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .
+
+    NOP             reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    procedure_call  reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    control_structure reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    NAME            reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    IF              reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    WHILE           reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    REPEAT          reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    ASSINGTO        reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    GOTO            reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    MOVE            reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    TURN            reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    FACE            reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    PUT             reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    PICK            reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    MOVETOTHE       reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    MOVEINDIR       reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    JUMPTOTHE       reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    JUMPINDIR       reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    CORCHD          reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+    ELSE            reduce using rule 62 (jumpToThe -> JUMPTOTHE DPUNTOS INT COMA BACK .)
+
+
+state 160
+
+    (63) jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .
+
+    NOP             reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    procedure_call  reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    control_structure reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    NAME            reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    IF              reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    WHILE           reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    REPEAT          reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    ASSINGTO        reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    GOTO            reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    MOVE            reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    TURN            reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    FACE            reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    PUT             reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    PICK            reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    MOVETOTHE       reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    MOVEINDIR       reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    JUMPTOTHE       reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    JUMPINDIR       reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    CORCHD          reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+    ELSE            reduce using rule 63 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA NORTH .)
+
+
+state 161
+
+    (64) jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .
+
+    NOP             reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    procedure_call  reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    control_structure reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    NAME            reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    IF              reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    WHILE           reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    REPEAT          reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    ASSINGTO        reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    GOTO            reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    MOVE            reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    TURN            reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    FACE            reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    PUT             reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    PICK            reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    MOVETOTHE       reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    MOVEINDIR       reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    JUMPTOTHE       reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    JUMPINDIR       reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    CORCHD          reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+    ELSE            reduce using rule 64 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA SOUTH .)
+
+
+state 162
+
+    (65) jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .
+
+    NOP             reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    procedure_call  reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    control_structure reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    NAME            reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    IF              reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    WHILE           reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    REPEAT          reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    ASSINGTO        reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    GOTO            reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    MOVE            reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    TURN            reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    FACE            reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    PUT             reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    PICK            reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    MOVETOTHE       reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    MOVEINDIR       reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    JUMPTOTHE       reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    JUMPINDIR       reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    CORCHD          reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+    ELSE            reduce using rule 65 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA EAST .)
+
+
+state 163
+
+    (66) jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .
+
+    NOP             reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    procedure_call  reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    control_structure reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    NAME            reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    IF              reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    WHILE           reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    REPEAT          reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    ASSINGTO        reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    GOTO            reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    MOVE            reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    TURN            reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    FACE            reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    PUT             reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    PICK            reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    MOVETOTHE       reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    MOVEINDIR       reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    JUMPTOTHE       reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    JUMPINDIR       reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    CORCHD          reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+    ELSE            reduce using rule 66 (jumpInDir -> JUMPINDIR DPUNTOS INT COMA WEST .)
+
+
+state 164
+
+    (14) proc_def -> NAME CORCHI parameters CORCHD instruction_block proc_def .
+
+    CORCHI          reduce using rule 14 (proc_def -> NAME CORCHI parameters CORCHD instruction_block proc_def .)
+
+
+state 165
+
+    (15) parameters -> LINEA NAME parameters_tail LINEA .
+
+    CORCHD          reduce using rule 15 (parameters -> LINEA NAME parameters_tail LINEA .)
+
+
+state 166
+
+    (17) parameters_tail -> COMA NAME . parameters_tail
+    (18) parameters_tail -> COMA NAME .
+    (17) parameters_tail -> . COMA NAME parameters_tail
+    (18) parameters_tail -> . COMA NAME
+
+    LINEA           reduce using rule 18 (parameters_tail -> COMA NAME .)
+    COMA            shift and go to state 131
+
+    parameters_tail                shift and go to state 175
+
+state 167
+
+    (68) instruction -> IF DPUNTOS condition THEN DPUNTOS instructions . ELSE DPUNTOS instructions
+
+    ELSE            shift and go to state 176
+
+
+state 168
+
+    (72) condition -> CANPUT args COMA NAME .
+
+    THEN            reduce using rule 72 (condition -> CANPUT args COMA NAME .)
+    DO              reduce using rule 72 (condition -> CANPUT args COMA NAME .)
+
+
+state 169
+
+    (73) condition -> CANPICK args COMA NAME .
+
+    THEN            reduce using rule 73 (condition -> CANPICK args COMA NAME .)
+    DO              reduce using rule 73 (condition -> CANPICK args COMA NAME .)
+
+
+state 170
+
+    (74) condition -> CANMOVEINDIR args COMA NAME .
+
+    THEN            reduce using rule 74 (condition -> CANMOVEINDIR args COMA NAME .)
+    DO              reduce using rule 74 (condition -> CANMOVEINDIR args COMA NAME .)
+
+
+state 171
+
+    (75) condition -> CANJUMPINDIR args COMA NAME .
+
+    THEN            reduce using rule 75 (condition -> CANJUMPINDIR args COMA NAME .)
+    DO              reduce using rule 75 (condition -> CANJUMPINDIR args COMA NAME .)
+
+
+state 172
+
+    (76) condition -> CANMOVETOTHE args COMA NAME .
+
+    THEN            reduce using rule 76 (condition -> CANMOVETOTHE args COMA NAME .)
+    DO              reduce using rule 76 (condition -> CANMOVETOTHE args COMA NAME .)
+
+
+state 173
+
+    (77) condition -> CANJUMPTOTHE args COMA NAME .
+
+    THEN            reduce using rule 77 (condition -> CANJUMPTOTHE args COMA NAME .)
+    DO              reduce using rule 77 (condition -> CANJUMPTOTHE args COMA NAME .)
+
+
+state 174
+
+    (69) instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .
+
+    NOP             reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    procedure_call  reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    control_structure reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    NAME            reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    IF              reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    WHILE           reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    REPEAT          reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    ASSINGTO        reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    GOTO            reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    MOVE            reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    TURN            reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    FACE            reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    PUT             reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    PICK            reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    MOVETOTHE       reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    MOVEINDIR       reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    JUMPTOTHE       reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    JUMPINDIR       reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    CORCHD          reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+    ELSE            reduce using rule 69 (instruction -> WHILE DPUNTOS condition DO DPUNTOS instructions .)
+
+
+state 175
+
+    (17) parameters_tail -> COMA NAME parameters_tail .
+
+    LINEA           reduce using rule 17 (parameters_tail -> COMA NAME parameters_tail .)
+
+
+state 176
+
+    (68) instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE . DPUNTOS instructions
+
+    DPUNTOS         shift and go to state 177
+
+
+state 177
+
+    (68) instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS . instructions
+    (21) instructions -> . instruction instructions
+    (22) instructions -> . instruction
+    (23) instruction -> . assignTo
+    (24) instruction -> . goto
+    (25) instruction -> . move
+    (26) instruction -> . turn
+    (27) instruction -> . face
+    (28) instruction -> . put
+    (29) instruction -> . pick
+    (30) instruction -> . moveToThe
+    (31) instruction -> . moveInDir
+    (32) instruction -> . jumpToThe
+    (33) instruction -> . jumpInDir
+    (34) instruction -> . NOP
+    (35) instruction -> . procedure_call
+    (36) instruction -> . control_structure
+    (67) instruction -> . NAME DPUNTOS args
+    (68) instruction -> . IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions
+    (69) instruction -> . WHILE DPUNTOS condition DO DPUNTOS instructions
+    (70) instruction -> . REPEAT DPUNTOS args DPUNTOS instructions
+    (37) assignTo -> . ASSINGTO PCOMA NAME COMA INT
+    (38) goto -> . GOTO DPUNTOS INT COMA INT
+    (39) move -> . MOVE DPUNTOS INT
+    (40) turn -> . TURN DPUNTOS LEFT
+    (41) turn -> . TURN DPUNTOS RIGHT
+    (42) turn -> . TURN DPUNTOS AROUND
+    (43) face -> . FACE DPUNTOS NORTH
+    (44) face -> . FACE DPUNTOS SOUTH
+    (45) face -> . FACE DPUNTOS EAST
+    (46) face -> . FACE DPUNTOS WEST
+    (47) put -> . PUT DPUNTOS INT COMA BALLOONS
+    (48) put -> . PUT DPUNTOS INT COMA CHIPS
+    (49) pick -> . PICK DPUNTOS INT COMA BALLOONS
+    (50) pick -> . PICK DPUNTOS INT COMA CHIPS
+    (51) moveToThe -> . MOVETOTHE DPUNTOS INT COMA FRONT
+    (52) moveToThe -> . MOVETOTHE DPUNTOS INT COMA LEFT
+    (53) moveToThe -> . MOVETOTHE DPUNTOS INT COMA RIGHT
+    (54) moveToThe -> . MOVETOTHE DPUNTOS INT COMA BACK
+    (55) moveInDir -> . MOVEINDIR DPUNTOS INT COMA NORTH
+    (56) moveInDir -> . MOVEINDIR DPUNTOS INT COMA SOUTH
+    (57) moveInDir -> . MOVEINDIR DPUNTOS INT COMA EAST
+    (58) moveInDir -> . MOVEINDIR DPUNTOS INT COMA WEST
+    (59) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA FRONT
+    (60) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA LEFT
+    (61) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA RIGHT
+    (62) jumpToThe -> . JUMPTOTHE DPUNTOS INT COMA BACK
+    (63) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA NORTH
+    (64) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA SOUTH
+    (65) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA EAST
+    (66) jumpInDir -> . JUMPINDIR DPUNTOS INT COMA WEST
+
+    NOP             shift and go to state 27
+    procedure_call  shift and go to state 28
+    control_structure shift and go to state 29
+    NAME            shift and go to state 30
+    IF              shift and go to state 31
+    WHILE           shift and go to state 32
+    REPEAT          shift and go to state 33
+    ASSINGTO        shift and go to state 34
+    GOTO            shift and go to state 35
+    MOVE            shift and go to state 36
+    TURN            shift and go to state 37
+    FACE            shift and go to state 38
+    PUT             shift and go to state 39
+    PICK            shift and go to state 40
+    MOVETOTHE       shift and go to state 41
+    MOVEINDIR       shift and go to state 42
+    JUMPTOTHE       shift and go to state 43
+    JUMPINDIR       shift and go to state 44
+
+    instructions                   shift and go to state 178
+    instruction                    shift and go to state 15
+    assignTo                       shift and go to state 16
+    goto                           shift and go to state 17
+    move                           shift and go to state 18
+    turn                           shift and go to state 19
+    face                           shift and go to state 20
+    put                            shift and go to state 21
+    pick                           shift and go to state 22
+    moveToThe                      shift and go to state 23
+    moveInDir                      shift and go to state 24
+    jumpToThe                      shift and go to state 25
+    jumpInDir                      shift and go to state 26
+
+state 178
+
+    (68) instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .
+
+    NOP             reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    procedure_call  reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    control_structure reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    NAME            reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    IF              reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    WHILE           reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    REPEAT          reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    ASSINGTO        reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    GOTO            reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    MOVE            reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    TURN            reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    FACE            reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    PUT             reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    PICK            reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    MOVETOTHE       reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    MOVEINDIR       reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    JUMPTOTHE       reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    JUMPINDIR       reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    CORCHD          reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+    ELSE            reduce using rule 68 (instruction -> IF DPUNTOS condition THEN DPUNTOS instructions ELSE DPUNTOS instructions .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for NOP in state 15 resolved as shift
+WARNING: shift/reduce conflict for procedure_call in state 15 resolved as shift
+WARNING: shift/reduce conflict for control_structure in state 15 resolved as shift
+WARNING: shift/reduce conflict for NAME in state 15 resolved as shift
+WARNING: shift/reduce conflict for IF in state 15 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 15 resolved as shift
+WARNING: shift/reduce conflict for REPEAT in state 15 resolved as shift
+WARNING: shift/reduce conflict for ASSINGTO in state 15 resolved as shift
+WARNING: shift/reduce conflict for GOTO in state 15 resolved as shift
+WARNING: shift/reduce conflict for MOVE in state 15 resolved as shift
+WARNING: shift/reduce conflict for TURN in state 15 resolved as shift
+WARNING: shift/reduce conflict for FACE in state 15 resolved as shift
+WARNING: shift/reduce conflict for PUT in state 15 resolved as shift
+WARNING: shift/reduce conflict for PICK in state 15 resolved as shift
+WARNING: shift/reduce conflict for MOVETOTHE in state 15 resolved as shift
+WARNING: shift/reduce conflict for MOVEINDIR in state 15 resolved as shift
+WARNING: shift/reduce conflict for JUMPTOTHE in state 15 resolved as shift
+WARNING: shift/reduce conflict for JUMPINDIR in state 15 resolved as shift
+WARNING: shift/reduce conflict for COMA in state 73 resolved as shift
