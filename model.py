@@ -162,6 +162,7 @@ def CARGAR_ARCHIVO(nombre : str)->str:
 
     return texto.lower()
 #TODO se cambia el nombre de la función para que genere menor confusión. se quita su tipo de retorno bool.
+
 def TOKENIZAR_CODIGO(texto : str):
     lexer.input(texto)
     tokenized = []
@@ -186,8 +187,8 @@ def TOKENIZAR_CODIGO(texto : str):
 
 
 def p_program(p):
-    '''program : ROBOT_R VARS var_list PROCS proc_def instruction_block
-                | ROBOT_R PROCS proc_def instruction_block
+    '''program : ROBOT_R VARS var_list PROCS procs_def instruction_block
+                | ROBOT_R PROCS procs_def instruction_block
                 | ROBOT_R VARS instruction_block
                 | ROBOT_R instruction_block
                 | ROBOT_R PROCS
@@ -222,17 +223,17 @@ def p_var_list_tail(p):
     else:
         p[0] = [p[2]] + p[3]
 
-def p_proc_def(p):
-    '''proc_def : NAME CORCHI parameters CORCHD instruction_block
-                | NAME CORCHI parameters CORCHD instruction_block proc_def '''
+def p_procs_def(p):
+    '''procs_def : NAME CORCHI parametros CORCHD instruction_block
+                | NAME CORCHI parametros CORCHD instruction_block procs_def '''
     
     if len(p) == 6:
         p[0] = [('procedure', p[1], p[3], p[5])]
     else:
         p[0] = [('procedure', p[1], p[3], p[5])] + p[6]
 
-def p_parameters(p):
-    '''parameters : LINEA NAME parameters_tail LINEA
+def p_parametros(p):
+    ''' parametros : LINEA NAME parametros_tail LINEA
                   | LINEA NAME LINEA
     '''
 
@@ -241,8 +242,8 @@ def p_parameters(p):
     else:
         p[0] = [p[2]] + p[3]
 
-def p_parameters_tail(p):
-    '''parameters_tail : COMA NAME parameters_tail
+def p_parametros_tail(p):
+    ''' parametros_tail : COMA NAME parametros_tail
                        | COMA NAME
     '''
     if len(p) == 2:
@@ -428,7 +429,7 @@ parser = yacc.yacc()
 
 def parse_code(code_tokenizado):
 
-    result = parser.parse(code_tokenizado)
+    result = parser.parse(code_tokenizado, lexer = lexer, debug = True, tracking = True)
 
     return result
     
