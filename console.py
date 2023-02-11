@@ -19,6 +19,7 @@ def CARGARMENU():
         else:
             print("Ingrese una opcion valida\n")
 
+
 def EVALUARCODIGO ():
     
     nombre = input("Ingrese el nombre del archivo: ")
@@ -28,7 +29,6 @@ def EVALUARCODIGO ():
     
     texto = controller.CARGAR_ARCHIVO(nombre)
     texto_tokenizado = controller.TOKENIZARCODIGO(texto)
-    #TODO Se cambio el parametro que recibe la respuesta y se guardo la respuesta tokenizada en una variable
     rta = controller.parse_code(texto)
 
     print(rta)
